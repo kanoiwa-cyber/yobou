@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>職員用 ワクチンWEB枠の調整｜加納岩総合病院</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1d2a31; --sub:#4a5a62; --line:#c8d6db; --paper:#fff; --tint:#eef5f6;
+  --main:#205a6e; --main-dark:#17485a; --err:#b3261e;
+  --s-open-bg:#e6f4ea; --s-open:#1e6b35;
+  --s-full-bg:#fde8e8; --s-full:#a61b1b;
+  --s-past-bg:#eeeeee; --s-past:#666;
+  --s-tel-bg:#fff3d6; --s-tel:#7a5200;
+  --edit-bg:#fffbe6; --radius:6px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#f5f8f9;color:var(--ink);font-family:"BIZ UDPGothic","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;font-size:16px;line-height:1.6;padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
+.hidden{display:none !important}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{background:#fff;border-top:6px solid var(--main);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+header h1{font-size:20px;margin:0}
+header h1 small{display:block;font-size:14px;font-weight:400;color:var(--sub)}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--sub)}
+button{font:inherit;cursor:pointer}
+.btn{border:2px solid var(--main);background:#fff;color:var(--main);border-radius:var(--radius);padding:8px 16px;font-weight:700;min-height:44px}
+.btn.primary{background:var(--main);color:#fff}
+.btn.primary:hover{background:var(--main-dark)}
+.btn.quiet{border-color:var(--line);color:var(--sub)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* ログイン */
+.login{max-width:420px;margin:48px auto;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.login h2{margin:0 0 6px;font-size:20px}
+.login p{margin:0 0 16px;color:var(--sub);font-size:15px}
+label.lb{display:block;font-weight:700;margin-bottom:6px}
+input[type=password],input[type=text]{width:100%;font:inherit;font-size:20px;letter-spacing:2px;border:1.5px solid #9fb2b9;border-radius:var(--radius);padding:10px 12px;min-height:50px}
+input:focus{border-color:var(--main);outline:3px solid rgba(32,90,110,.25);outline-offset:0}
+.msg{border-radius:var(--radius);padding:10px 14px;margin:12px 0;font-size:15px;white-space:pre-line}
+.msg.err{background:#fdecea;border:1.5px solid var(--err);color:#7d1a14}
+.msg.ok{background:#e6f4ea;border:1.5px solid var(--s-open);color:#174f27}
+
+/* 一覧 */
+.bar{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:20px 0 10px}
+.seg{display:inline-flex;border:1.5px solid var(--main);border-radius:var(--radius);overflow:hidden}
+.seg label{padding:8px 14px;cursor:pointer;font-weight:700;color:var(--main);border-left:1px solid var(--main)}
+.seg label:first-child{border-left:none}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--main);color:#fff}
+.seg label:has(input:focus-visible){outline:3px solid #f0a500;outline-offset:-3px}
+.chk{display:inline-flex;gap:8px;align-items:center;cursor:pointer}
+.chk input{width:20px;height:20px;accent-color:var(--main)}
+.legend{font-size:14px;color:var(--sub);background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:10px 14px;margin-bottom:12px}
+.legend p{margin:2px 0}
+.table-box{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:860px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+thead th{background:var(--tint);font-size:14px;position:sticky;top:0;z-index:1;white-space:nowrap}
+tbody tr.day-start td{border-top:2px solid #9fb2b9}
+tr.edited td{background:var(--edit-bg)}
+tr.past td{color:#888}
+.dt{font-weight:700;white-space:nowrap}
+.type{font-size:14px;white-space:nowrap}
+.state{display:inline-block;font-size:14px;font-weight:700;padding:3px 10px;border-radius:3px;white-space:nowrap}
+.st-受付中{background:var(--s-open-bg);color:var(--s-open)}
+.st-満枠{background:var(--s-full-bg);color:var(--s-full)}
+.st-締切{background:var(--s-past-bg);color:var(--s-past)}
+.st-電話受付{background:var(--s-tel-bg);color:var(--s-tel)}
+.num{white-space:nowrap}
+.num b{font-size:18px}
+.num small{display:block;color:var(--sub);font-size:13px}
+.stepper{display:inline-flex;align-items:center;border:1.5px solid #9fb2b9;border-radius:var(--radius);overflow:hidden}
+.stepper button{width:40px;height:40px;border:none;background:var(--tint);color:var(--main);font-size:20px;font-weight:700}
+.stepper button:disabled{color:#aaa;cursor:not-allowed}
+.stepper input{width:52px;height:40px;border:none;border-left:1px solid var(--line);border-right:1px solid var(--line);text-align:center;font:inherit;font-size:18px;font-weight:700;letter-spacing:0;padding:0;min-height:0}
+.warn{display:block;color:var(--err);font-size:13px;font-weight:700;margin-top:4px}
+.switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;white-space:nowrap}
+.switch input{width:22px;height:22px;accent-color:#b07a00}
+.upd{font-size:13px;color:var(--sub);white-space:nowrap}
+.edited-tag{display:inline-block;font-size:12px;font-weight:700;color:#7a5200;margin-left:6px}
+.empty{padding:20px;text-align:center;color:var(--sub)}
+
+/* 履歴 */
+h2.sec{font-size:18px;margin:28px 0 8px;padding-bottom:4px;border-bottom:2px solid var(--main);color:var(--main-dark)}
+.hist{font-size:14px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow-x:auto}
+.hist table{min-width:640px}
+
+/* 決定バー */
+.savebar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:3px solid var(--main);box-shadow:0 -2px 8px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+.savebar .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
+.savebar .count{font-weight:700;min-width:7em}
+.savebar .staff{display:flex;align-items:center;gap:8px}
+.savebar .staff input{width:9em;font-size:18px;min-height:44px;padding:6px 10px}
+.savebar .grow{flex:1}
+
+dialog{border:none;border-radius:var(--radius);padding:0;max-width:560px;width:calc(100% - 32px);box-shadow:0 8px 30px rgba(0,0,0,.25)}
+dialog::backdrop{background:rgba(20,30,35,.45)}
+.dlg-body{padding:20px 22px}
+.dlg-body h2{margin:0 0 10px;font-size:19px}
+.dlg-body ul{margin:0;padding-left:1.2em;max-height:50vh;overflow:auto}
+.dlg-body li{margin:4px 0}
+.dlg-foot{display:flex;gap:10px;justify-content:flex-end;padding:14px 22px;background:var(--tint)}
+
+@media (max-width:640px){
+  .savebar .grow{display:none}
+  .savebar .staff{width:100%}
+  .savebar .staff input{flex:1}
+  .savebar .btn{flex:1}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1><small>加納岩総合病院 職員用</small>ワクチンWEB予約枠の調整</h1>
+    <div class="tools hidden" id="tools">
+      <span id="loadedAt"></span>
+      <button class="btn quiet" id="reloadBtn" type="button">最新の状態を読み込む</button>
+      <button class="btn quiet" id="logoutBtn" type="button">ログアウト</button>
+    </div>
+  </div>
+</header>
+
+<!-- ログイン -->
+<main id="loginView" class="wrap">
+  <form class="login" id="loginForm">
+    <h2>暗証番号の入力</h2>
+    <p>WEB予約枠の上限と、電話受付への切り替えを行う画面です。</p>
+    <label class="lb" for="pin">暗証番号</label>
+    <input type="password" id="pin" inputmode="numeric" autocomplete="off" maxlength="12" required>
+    <div id="loginMsg" class="msg err hidden" role="alert"></div>
+    <button class="btn primary" type="submit" style="width:100%;margin-top:14px" id="loginBtn">ログイン</button>
+  </form>
+</main>
+
+<!-- 枠調整 -->
+<main id="mainView" class="wrap hidden">
+  <div id="mainMsg" class="msg hidden" role="status" tabindex="-1"></div>
+
+  <div class="bar">
+    <div class="seg" role="radiogroup" aria-label="種類で絞り込み">
+      <label><input type="radio" name="ftype" value="all" checked>すべて</label>
+      <label><input type="radio" name="ftype" value="flu">インフルエンザ</label>
+      <label><input type="radio" name="ftype" value="covid">新型コロナ</label>
+    </div>
+    <label class="chk"><input type="checkbox" id="showPast">WEB受付締切を過ぎた枠も表示</label>
+  </div>
+
+  <div class="legend">
+    <p><b>WEB上限</b>：WEBで受け付ける人数です。減らした分は電話受付に回ります。</p>
+    <p><b>電話受付へ</b>にチェックすると、その枠はWEBの選択肢から消え、以降は電話・窓口で受け付けます。</p>
+    <p>WEB申込は「確定」と「仮（未対応・保留の第1希望）」の合計です。変更後、下の職員番号を入れて「枠調整を決定」を押すと反映されます。</p>
+  </div>
+
+  <div class="table-box">
+    <table>
+      <thead><tr>
+        <th scope="col">接種日時</th><th scope="col">種類</th><th scope="col">状態</th>
+        <th scope="col">WEB申込</th><th scope="col">WEB上限</th><th scope="col">電話受付へ</th>
+        <th scope="col">WEB締切</th><th scope="col">最終調整</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <h2 class="sec">最近の変更履歴（30件）</h2>
+  <div class="hist"><table><thead><tr><th>変更日時</th><th>職員番号</th><th>枠</th><th>項目</th><th>変更前</th><th>変更後</th></tr></thead><tbody id="hist"></tbody></table></div>
+</main>
+
+<div class="savebar hidden" id="saveBar">
+  <div class="wrap">
+    <span class="count" id="editCount">変更なし</span>
+    <span class="grow"></span>
+    <span class="staff"><label for="staffId">職員番号</label><input type="text" id="staffId" inputmode="numeric" autocomplete="off" maxlength="10"></span>
+    <button class="btn quiet" type="button" id="discardBtn" disabled>変更を取り消す</button>
+    <button class="btn primary" type="button" id="saveBtn" disabled>枠調整を決定</button>
+  </div>
+</div>
+
+<dialog id="confirmDlg" aria-labelledby="dlgTitle">
+  <div class="dlg-body">
+    <h2 id="dlgTitle">次の内容で枠を調整します</h2>
+    <p style="margin:0 0 8px">職員番号：<b id="dlgStaff"></b></p>
+    <ul id="dlgList"></ul>
+  </div>
+  <div class="dlg-foot">
+    <button class="btn quiet" type="button" id="dlgCancel">戻る</button>
+    <button class="btn primary" type="button" id="dlgOk">決定する</button>
+  </div>
+</dialog>
+
+<script>
+const APP = {
+  GAS_URL: 'https://script.google.com/macros/s/AKfycbwEadBkc-WP-wxCLumldiEtMuOFPkTtIeTpO2zORXrc7YnO2QqR2sQIRusDel_FD3JQ/exec',
+};
+const TYPE = { flu:'インフルエンザ', covid:'新型コロナ' };
+const W = '日月火水木金土';
+const $ = s => document.querySelector(s);
+const st = { token:null, slots:[], edits:{}, capMax:30, busy:false };
+
+/* ---------- 通信 ---------- */
+async function api(action, body = {}){
+  const r = await fetch(APP.GAS_URL, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+    body: JSON.stringify(Object.assign({ action, token: st.token }, body)) });
+  const res = await r.json();
+  if (!res.ok && res.code === 'SESSION'){ logout(res.message); throw new Error('SESSION'); }
+  return res;
+}
+
+/* ---------- ログイン ---------- */
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('#loginBtn'), msg = $('#loginMsg');
+  btn.disabled = true; btn.textContent = '確認しています…'; msg.classList.add('hidden');
+  try {
+    const res = await api('adminLogin', { pin: $('#pin').value.trim() });
+    if (!res.ok) throw new Error(res.message);
+    st.token = res.token;
+    $('#pin').value = '';
+    $('#loginView').classList.add('hidden');
+    $('#mainView').classList.remove('hidden');
+    $('#saveBar').classList.remove('hidden');
+    $('#tools').classList.remove('hidden');
+    await load();
+  } catch(err){
+    if (err.message !== 'SESSION'){ msg.textContent = err.message || '通信できませんでした。'; msg.classList.remove('hidden'); }
+  } finally { btn.disabled = false; btn.textContent = 'ログイン'; }
+});
+
+function logout(message){
+  st.token = null; st.edits = {};
+  $('#mainView').classList.add('hidden'); $('#saveBar').classList.add('hidden'); $('#tools').classList.add('hidden');
+  $('#loginView').classList.remove('hidden');
+  const m = $('#loginMsg');
+  if (message){ m.textContent = message; m.classList.remove('hidden'); } else m.classList.add('hidden');
+  $('#pin').focus();
+}
+$('#logoutBtn').addEventListener('click', () => {
+  if (Object.keys(st.edits).length && !confirm('決定していない変更があります。ログアウトしますか。')) return;
+  logout();
+});
+
+/* ---------- 読み込み・表示 ---------- */
+async function load(keepMsg){
+  if (!keepMsg) hideMsg();
+  try {
+    const res = await api('adminSlots');
+    if (!res.ok) throw new Error(res.message);
+    st.slots = res.slots; st.capMax = res.capMax; st.edits = {};
+    const now = new Date();
+    $('#loadedAt').textContent = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')} 時点`;
+    render(); renderHistory(res.history || []); updateBar();
+  } catch(err){ if (err.message !== 'SESSION') showMsg('err', err.message || '読み込めませんでした。'); }
+}
+$('#reloadBtn').addEventListener('click', () => {
+  if (Object.keys(st.edits).length && !confirm('決定していない変更は取り消されます。読み込み直しますか。')) return;
+  load();
+});
+document.querySelectorAll('input[name=ftype]').forEach(el => el.addEventListener('change', render));
+$('#showPast').addEventListener('change', render);
+
+function cur(s){ return st.edits[s.label] || { cap:s.cap, stop:s.stop }; }
+function dtLabel(s){ const d = new Date(s.date + 'T00:00:00'); return `${d.getMonth()+1}月${d.getDate()}日（${W[d.getDay()]}）${s.time}`; }
+function fmtDT(iso){ if (!iso) return ''; const d = new Date(iso); return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`; }
+function viewState(s, c){
+  if (c.stop) return '電話受付';
+  if (s.past) return '締切';
+  return s.used >= c.cap ? '満枠' : '受付中';
+}
+
+function render(){
+  const f = document.querySelector('input[name=ftype]:checked').value;
+  const showPast = $('#showPast').checked;
+  const list = st.slots.filter(s => (f === 'all' || s.type === f) && (showPast || !s.past));
+  const tb = $('#rows');
+  if (!list.length){ tb.innerHTML = '<tr><td colspan="8" class="empty">表示する枠はありません。</td></tr>'; return; }
+  let prev = '';
+  tb.innerHTML = list.map(s => {
+    const c = cur(s), edited = !!st.edits[s.label], state = viewState(s, c);
+    const dayStart = s.date !== prev; prev = s.date;
+    const dis = s.past ? 'disabled' : '';
+    const id = esc(s.label);
+    return `<tr data-label="${id}" class="${edited ? 'edited ' : ''}${s.past ? 'past ' : ''}${dayStart ? 'day-start' : ''}">
+      <td class="dt">${esc(dtLabel(s))}${edited ? '<span class="edited-tag">変更あり</span>' : ''}</td>
+      <td class="type">${TYPE[s.type]}</td>
+      <td><span class="state st-${state}">${state}</span></td>
+      <td class="num"><b>${s.used}</b> / ${c.cap}名<small>確定${s.fixed}・仮${s.pending}</small></td>
+      <td><span class="stepper">
+          <button type="button" data-act="minus" aria-label="${id}のWEB上限を1減らす" ${dis || (c.cap <= 0 ? 'disabled' : '')}>−</button>
+          <input type="text" inputmode="numeric" value="${c.cap}" data-act="cap" aria-label="${id}のWEB上限" ${dis}>
+          <button type="button" data-act="plus" aria-label="${id}のWEB上限を1増やす" ${dis || (c.cap >= st.capMax ? 'disabled' : '')}>＋</button>
+        </span>${c.cap < s.used && !c.stop ? '<span class="warn">申込数が上限を超えています</span>' : ''}</td>
+      <td><label class="switch"><input type="checkbox" data-act="stop" ${c.stop ? 'checked' : ''} ${dis}>電話受付へ</label></td>
+      <td class="upd">${fmtDT(s.cutoff)}</td>
+      <td class="upd">${s.updated ? fmtDT(s.updated) + '<br>職員 ' + esc(s.updatedBy) : '－'}</td>
+    </tr>`;
+  }).join('');
+}
+
+$('#rows').addEventListener('click', e => {
+  const b = e.target.closest('button[data-act]'); if (!b) return;
+  const s = findSlot(b); const c = cur(s);
+  setEdit(s, { cap: Math.min(st.capMax, Math.max(0, c.cap + (b.dataset.act === 'plus' ? 1 : -1))), stop:c.stop }, b.dataset.act);
+});
+$('#rows').addEventListener('change', e => {
+  const el = e.target; const s = findSlot(el); if (!s) return; const c = cur(s);
+  if (el.dataset.act === 'stop') setEdit(s, { cap:c.cap, stop:el.checked }, 'stop');
+  if (el.dataset.act === 'cap'){
+    const v = Number(String(el.value).replace(/[０-９]/g, d => String.fromCharCode(d.charCodeAt(0) - 0xFEE0)));
+    if (!Number.isInteger(v) || v < 0 || v > st.capMax){ showMsg('err', `WEB上限は0～${st.capMax}の数字で入力してください。`); el.value = c.cap; return; }
+    setEdit(s, { cap:v, stop:c.stop }, 'cap');
+  }
+});
+function findSlot(el){ const tr = el.closest('tr'); return tr && st.slots.find(s => s.label === tr.dataset.label); }
+function setEdit(s, next, focusAct){
+  if (next.cap === s.cap && next.stop === s.stop) delete st.edits[s.label];
+  else st.edits[s.label] = next;
+  render(); updateBar();
+  const tr = [...document.querySelectorAll('#rows tr')].find(t => t.dataset.label === s.label);
+  const f = tr && tr.querySelector(`[data-act=${focusAct}]`);
+  if (f && !f.disabled) f.focus();
+}
+
+function updateBar(){
+  const n = Object.keys(st.edits).length;
+  $('#editCount').textContent = n ? `変更 ${n}件（未決定）` : '変更なし';
+  $('#saveBtn').disabled = !n; $('#discardBtn').disabled = !n;
+}
+$('#discardBtn').addEventListener('click', () => { st.edits = {}; render(); updateBar(); });
+
+function renderHistory(h){
+  $('#hist').innerHTML = h.length ? h.map(x => `<tr><td>${fmtDT(x.at)}</td><td>${esc(x.staff)}</td><td>${esc(x.label)}</td><td>${esc(x.item)}</td><td>${esc(x.before)}</td><td>${esc(x.after)}</td></tr>`).join('')
+    : '<tr><td colspan="6" class="empty">変更履歴はまだありません。</td></tr>';
+}
+
+/* ---------- 決定 ---------- */
+$('#saveBtn').addEventListener('click', () => {
+  const staff = $('#staffId').value.trim().replace(/[０-９]/g, d => String.fromCharCode(d.charCodeAt(0) - 0xFEE0));
+  $('#staffId').value = staff;
+  if (!/^[0-9A-Za-z]{1,10}$/.test(staff)){ showMsg('err', '職員番号を入力してから「枠調整を決定」を押してください。'); $('#staffId').focus(); return; }
+  $('#dlgStaff').textContent = staff;
+  $('#dlgList').innerHTML = st.slots.filter(s => st.edits[s.label]).map(s => {
+    const a = st.edits[s.label], parts = [];
+    if (a.cap !== s.cap) parts.push(`WEB上限 ${s.cap}名 → <b>${a.cap}名</b>`);
+    if (a.stop !== s.stop) parts.push(a.stop ? '<b>電話受付へ切り替え</b>' : '<b>WEB受付に戻す</b>');
+    return `<li>${esc(dtLabel(s))}（${TYPE[s.type]}）：${parts.join('、')}</li>`;
+  }).join('');
+  $('#confirmDlg').showModal();
+});
+$('#dlgCancel').addEventListener('click', () => $('#confirmDlg').close());
+$('#dlgOk').addEventListener('click', async () => {
+  if (st.busy) return; st.busy = true;
+  const ok = $('#dlgOk'); ok.disabled = true; ok.textContent = '反映しています…';
+  const changes = st.slots.filter(s => st.edits[s.label]).map(s => ({ label:s.label, before:{ cap:s.cap, stop:s.stop }, after:st.edits[s.label] }));
+  try {
+    const res = await api('adminSave', { staffId: $('#staffId').value.trim(), changes });
+    $('#confirmDlg').close();
+    if (res.ok){ await load(true); showMsg('ok', `枠調整を反映しました（${changes.length}枠）。WEBの受付ページにもすぐ反映されます。`); }
+    else if (res.code === 'CONFLICT'){ await load(true); showMsg('err', res.message); }
+    else showMsg('err', res.message || '反映できませんでした。');
+  } catch(err){
+    $('#confirmDlg').close();
+    if (err.message !== 'SESSION') showMsg('err', '通信できませんでした。もう一度「枠調整を決定」を押してください。');
+  } finally { st.busy = false; ok.disabled = false; ok.textContent = '決定する'; }
+});
+
+function showMsg(kind, text){ const m = $('#mainMsg'); m.className = 'msg ' + kind; m.textContent = text; m.classList.remove('hidden'); m.scrollIntoView({ block:'center' }); m.focus({ preventScroll:true }); }
+function hideMsg(){ $('#mainMsg').classList.add('hidden'); }
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+window.addEventListener('beforeunload', e => { if (Object.keys(st.edits).length){ e.preventDefault(); e.returnValue = ''; } });
+</script>
+</body>
+</html>
