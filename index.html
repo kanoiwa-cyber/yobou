@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>令和8年度 インフルエンザ・新型コロナワクチン 接種希望日のWEB受付｜加納岩総合病院</title>
+<meta name="description" content="加納岩総合病院のインフルエンザ・新型コロナワクチン接種希望日をWEBで受け付けます。送信後、2診療日以内に病院からお電話でご連絡します。">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1d2a31;
+  --sub:#4a5a62;
+  --line:#c8d6db;
+  --paper:#ffffff;
+  --tint:#eef5f6;
+  --main:#205a6e;
+  --main-dark:#17485a;
+  --notice-bg:#fff6df;
+  --notice-line:#e2b34a;
+  --notice-ink:#5e4300;
+  --err:#b3261e;
+  --ok:#1e6b35;
+  --radius:6px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:"BIZ UDPGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif;
+  font-size:18px;line-height:1.75;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+a{color:var(--main)}
+:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
+
+/* ヘッダー */
+.site{border-top:6px solid var(--main);padding-top:env(safe-area-inset-top,0px);border-bottom:1px solid var(--line)}
+.site .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:12px;padding-bottom:12px}
+.site .name{font-weight:700;font-size:18px;color:var(--main-dark)}
+.site .tel{font-size:15px;color:var(--sub);text-align:right;line-height:1.4}
+.site .tel a{font-weight:700;font-size:17px;text-decoration:none}
+
+/* 見出し */
+.lead{padding-top:28px;padding-bottom:8px}
+.lead .year{font-size:16px;color:var(--sub);margin:0}
+.lead h1{font-size:28px;line-height:1.45;margin:4px 0 12px;font-weight:700}
+.lead p{margin:0}
+.nb{display:inline-block}
+
+/* 流れ */
+.flow{margin:22px 0 8px;padding:0;list-style:none;border:2px solid var(--main);border-radius:var(--radius);overflow:hidden}
+.flow li{display:grid;grid-template-columns:56px 1fr;align-items:center;border-top:1px solid var(--line);background:#fff}
+.flow li:first-child{border-top:none}
+.flow .no{align-self:stretch;display:flex;align-items:center;justify-content:center;background:var(--main);color:#fff;font-weight:700;font-size:22px}
+.flow li:nth-child(2) .no{background:var(--main-dark)}
+.flow .tx{padding:12px 16px;line-height:1.5}
+.flow .tx b{display:block;font-size:19px}
+.flow .tx span{font-size:15px;color:var(--sub)}
+.caution{margin:12px 0 0;font-size:16px;color:var(--notice-ink);background:var(--notice-bg);border-left:5px solid var(--notice-line);padding:10px 14px}
+
+/* 案内 */
+section{padding-top:28px;padding-bottom:4px}
+h2{font-size:22px;margin:0 0 12px;padding-bottom:6px;border-bottom:2px solid var(--main);color:var(--main-dark)}
+h3{font-size:19px;margin:22px 0 8px}
+.scroll{overflow-x:auto}
+table.info{width:100%;border-collapse:collapse;font-size:16px;min-width:520px}
+table.info th,table.info td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+table.info thead th{background:var(--tint);font-weight:700}
+table.info tbody th{background:#f7fafb;width:8.5em;font-weight:700;white-space:nowrap}
+.note{font-size:15px;color:var(--sub);margin:8px 0 0}
+dl.kv{margin:0;display:grid;grid-template-columns:7em 1fr;border-top:1px solid var(--line);font-size:16px}
+dl.kv dt,dl.kv dd{margin:0;padding:10px 4px;border-bottom:1px solid var(--line)}
+dl.kv dt{font-weight:700;color:var(--main-dark)}
+ul.plain{margin:6px 0 0;padding-left:1.3em;font-size:16px}
+
+/* フォーム */
+.form-area{background:var(--tint);margin-top:32px;padding:8px 0 40px;border-top:1px solid var(--line)}
+fieldset{border:none;margin:0;padding:0}
+.block{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 8px;margin:18px 0}
+.block legend,.block .bt{font-size:19px;font-weight:700;padding:0;margin:0 0 10px;color:var(--main-dark);float:left;width:100%}
+.block legend + *{clear:both}
+.field{margin:0 0 18px}
+.field > label,.field > .lb{display:block;font-weight:700;margin-bottom:6px}
+.req,.opt{display:inline-block;font-size:13px;font-weight:700;line-height:1;padding:4px 7px;border-radius:3px;margin-left:8px;vertical-align:2px}
+.req{background:var(--err);color:#fff}
+.opt{background:#e3e8ea;color:var(--sub)}
+.help{font-size:15px;color:var(--sub);margin:4px 0 0}
+input[type=text],input[type=tel],select,textarea{
+  width:100%;font:inherit;font-size:18px;color:var(--ink);background:#fff;
+  border:1.5px solid #9fb2b9;border-radius:var(--radius);padding:10px 12px;min-height:50px;
+}
+textarea{min-height:90px;resize:vertical}
+select{appearance:none;-webkit-appearance:none;padding-right:40px;
+  background-image:linear-gradient(45deg,transparent 50%,var(--main) 50%),linear-gradient(135deg,var(--main) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 22px,calc(100% - 14px) 22px;background-size:6px 6px;background-repeat:no-repeat}
+input:focus,select:focus,textarea:focus{border-color:var(--main);outline:3px solid rgba(32,90,110,.25);outline-offset:0}
+.invalid input,.invalid select,.invalid textarea{border-color:var(--err);background:#fff8f7}
+.errmsg{display:none;color:var(--err);font-size:15px;font-weight:700;margin-top:4px}
+.invalid .errmsg{display:block}
+.row{display:grid;gap:8px}
+.birth{grid-template-columns:1.2fr 1fr 1fr 1fr}
+.birth select{padding-left:10px}
+
+.checks{display:grid;gap:10px}
+.check{display:flex;align-items:center;gap:12px;border:1.5px solid #9fb2b9;border-radius:var(--radius);padding:12px 14px;background:#fff;cursor:pointer;min-height:56px}
+.check input{width:24px;height:24px;margin:0;accent-color:var(--main);flex:none}
+.check:has(input:checked){border-color:var(--main);background:#f2f8f9;box-shadow:inset 0 0 0 1px var(--main)}
+.check small{display:block;color:var(--sub);font-size:14px;line-height:1.4}
+.check.inline{display:inline-flex;min-height:50px;margin-right:8px}
+.radios{display:flex;flex-wrap:wrap;gap:8px}
+
+.choice{display:grid;grid-template-columns:5.2em 1fr;gap:10px;align-items:center;margin-bottom:10px}
+.choice .rk{font-weight:700;font-size:16px;text-align:center;border-radius:var(--radius);padding:12px 0;background:var(--tint);color:var(--main-dark)}
+.choice:first-of-type .rk{background:var(--main);color:#fff}
+.vgroup{border-top:1px dashed var(--line);padding-top:14px;margin-top:4px}
+.vgroup:first-of-type{border-top:none;padding-top:0}
+.vgroup h3{margin:0 0 6px;font-size:18px}
+.empty{padding:12px 14px;background:var(--notice-bg);color:var(--notice-ink);border-radius:var(--radius);font-size:16px}
+.hidden{display:none !important}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+.policy{font-size:15px;color:var(--sub);background:#f7fafb;border:1px solid var(--line);border-radius:var(--radius);padding:10px 14px;margin-bottom:12px}
+
+.btn{display:block;width:100%;font:inherit;font-size:20px;font-weight:700;border-radius:var(--radius);padding:16px;cursor:pointer;border:2px solid var(--main);min-height:60px}
+.btn.primary{background:var(--main);color:#fff}
+.btn.primary:hover{background:var(--main-dark)}
+.btn.secondary{background:#fff;color:var(--main)}
+.btn[disabled]{opacity:.6;cursor:wait}
+.btns{display:grid;gap:12px;margin-top:16px}
+
+.alert{border-radius:var(--radius);padding:14px 16px;margin:18px 0;font-size:16px;white-space:pre-line}
+.alert.err{background:#fdecea;border:1.5px solid var(--err);color:#7d1a14}
+.alert.info{background:#fff;border:1.5px solid var(--main);color:var(--ink)}
+.demo{background:#333;color:#fff;font-size:14px;text-align:center;padding:6px}
+
+/* 確認・完了 */
+table.confirm{width:100%;border-collapse:collapse;font-size:17px;background:#fff}
+table.confirm th,table.confirm td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+table.confirm th{background:#f7fafb;width:8.5em;white-space:nowrap}
+.done{background:#fff;border:2px solid var(--main);border-radius:var(--radius);padding:22px 20px;margin:24px 0}
+.done h2{border:none;padding:0;margin:0 0 8px}
+.receipt{font-size:28px;font-weight:700;letter-spacing:1px;color:var(--main-dark)}
+.reply{font-size:20px;font-weight:700;margin:6px 0 12px}
+
+footer{border-top:1px solid var(--line);padding:22px 0 30px;font-size:15px;color:var(--sub)}
+footer p{margin:2px 0}
+
+@media (max-width:560px){
+  body{font-size:17px}
+  .lead h1{font-size:24px}
+  .site .wrap{flex-direction:column;align-items:flex-start;gap:2px}
+  .site .tel{text-align:left}
+  .birth{grid-template-columns:1fr 1fr}
+  dl.kv{grid-template-columns:5.5em 1fr}
+  table.confirm th{width:6.5em}
+  table.info{min-width:0;font-size:15px}
+  table.info th,table.info td{padding:8px}
+  table.info tbody th{width:auto;white-space:normal;min-width:4.5em}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto !important}}
+@media print{.form-area,.site .tel{display:none}}
+</style>
+</head>
+<body>
+<div id="demoBar" class="demo hidden">デモ表示中（GASと未接続のため、送信は保存されません）</div>
+
+<header class="site">
+  <div class="wrap">
+    <div class="name">加納岩総合病院</div>
+    <div class="tel">お電話でのご予約・お問い合わせ<br><a id="telLink" href="tel:0553222511">0553-22-2511</a>（月～土 9:00～17:00）</div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap lead">
+    <p class="year">令和8年度</p>
+    <h1><span class="nb">インフルエンザ・</span><span class="nb">新型コロナワクチン</span><br><span class="nb">接種希望日の</span><span class="nb">WEB受付</span></h1>
+    <p>ご希望の日時を3つまでお選びいただき、送信してください。</p>
+
+    <ol class="flow" aria-label="予約が確定するまでの流れ">
+      <li><div class="no" aria-hidden="true">1</div><div class="tx"><b>このページから希望日時を送信</b><span>第1～第3希望まで選べます</span></div></li>
+      <li><div class="no" aria-hidden="true">2</div><div class="tx"><b>2診療日以内に病院からお電話</b><span>診療日は月～土曜日です（日曜・祝日を除く）</span></div></li>
+      <li><div class="no" aria-hidden="true">3</div><div class="tx"><b>お電話で接種日時が決まります</b><span>当日の持ち物や料金もお伝えします</span></div></li>
+    </ol>
+    <p class="caution">送信した時点では、予約は確定していません。病院からのお電話をお待ちください。</p>
+  </div>
+
+  <section class="wrap" aria-labelledby="h-schedule">
+    <h2 id="h-schedule">接種日程</h2>
+    <div class="scroll">
+      <table class="info">
+        <thead><tr><th scope="col"></th><th scope="col">インフルエンザ</th><th scope="col">新型コロナ</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">接種日</th><td>10月20日（火）～12月8日（火）の<br>月・火・木曜日</td><td>11月14日・11月28日・<br>12月5日・12月19日（いずれも土曜日）</td></tr>
+          <tr><th scope="row">予約時間</th><td>15:00 または 15:30<br><small>当日の受付は14:30からです</small></td><td>14:00</td></tr>
+          <tr><th scope="row">対象</th><td>高校生以上の方</td><td>高校生以上の方</td></tr>
+          <tr><th scope="row">料金（税込）</th><td>4,400円</td><td>16,800円</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">各日時とも人数に限りがあります。定員に達した日時と、受付期限を過ぎた日時は選択肢に表示されません。</p>
+  </section>
+
+  <section class="wrap" aria-labelledby="h-public">
+    <h2 id="h-public">公費（助成）について</h2>
+    <dl class="kv">
+      <dt>インフル</dt>
+      <dd>お住まいの市町村の案内をご確認ください。上記の金額から補助額を差し引いた金額が、窓口でのお支払いになります。</dd>
+      <dt>新型コロナ</dt>
+      <dd>対象は、65歳以上の方、または60～64歳で心臓・腎臓・呼吸器などの基礎疾患がある方です。公費対象の方のお支払いは9,000円です（公費7,800円）。本年度すでに接種を受けた方は公費の対象外です。対象はお住まいの市町村により異なりますので、各市町村にご確認ください。</dd>
+    </dl>
+  </section>
+
+  <section class="wrap" aria-labelledby="h-bring">
+    <h2 id="h-bring">当日の持ち物</h2>
+    <ul class="plain">
+      <li>診察券または保険証</li>
+      <li>予診票（問診票）…当日の体温を測り、記入してお持ちください</li>
+    </ul>
+    <h3>予診票について（公費対象の方）</h3>
+    <ul class="plain">
+      <li>山梨市・甲州市・大月市の方は、病院に用意しています。</li>
+      <li>それ以外の市町村の方は、原則として市町村からご自宅に郵送されます。</li>
+      <li>公費対象外（一般接種）の方には、病院でお渡しします。</li>
+    </ul>
+  </section>
+
+  <div class="form-area" id="form-top">
+    <div class="wrap">
+
+      <!-- 入力画面 -->
+      <form id="form" novalidate>
+        <h2 style="margin-top:24px">接種希望日の入力</h2>
+        <div id="status" class="alert info" role="status">受付中の日時を読み込んでいます…</div>
+        <div id="formError" class="alert err hidden" role="alert" tabindex="-1"></div>
+
+        <div id="formBody" class="hidden">
+          <fieldset class="block" id="f-vaccine">
+            <legend>希望するワクチン<span class="req">必須</span></legend>
+            <div class="field">
+              <div class="checks">
+                <label class="check"><input type="checkbox" name="vaccines" value="flu"><span>インフルエンザ<small>10月20日～12月8日の月・火・木曜日</small></span></label>
+                <label class="check"><input type="checkbox" name="vaccines" value="covid"><span>新型コロナ<small>11月14日～12月19日の指定の土曜日</small></span></label>
+              </div>
+              <p class="errmsg">希望するワクチンを選んでください。</p>
+            </div>
+          </fieldset>
+
+          <fieldset class="block hidden" id="f-slots">
+            <legend>希望日時<span class="req">必須</span></legend>
+            <p class="help" style="margin:0 0 12px">第1希望は必ず選んでください。調整しやすくなるため、できるだけ3つお選びください。</p>
+
+            <div class="vgroup hidden" id="g-flu">
+              <h3>インフルエンザ</h3>
+              <div class="field" id="fl-flu"><div id="flu-choices"></div><p class="errmsg">第1希望を選んでください。</p></div>
+            </div>
+
+            <div class="vgroup hidden" id="g-covid">
+              <h3>新型コロナ</h3>
+              <div class="field" id="fl-covid"><div id="covid-choices"></div><p class="errmsg">第1希望を選んでください。</p></div>
+              <div class="field" id="fl-covidDone">
+                <span class="lb">本年度（令和8年4月以降）に新型コロナワクチンを接種しましたか<span class="req">必須</span></span>
+                <div class="radios">
+                  <label class="check inline"><input type="radio" name="covidDone" value="いいえ"><span>いいえ</span></label>
+                  <label class="check inline"><input type="radio" name="covidDone" value="はい"><span>はい</span></label>
+                </div>
+                <p class="help">接種済みの方は公費の対象外になります。</p>
+                <p class="errmsg">どちらかを選んでください。</p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="block" id="f-person">
+            <legend>接種を受ける方</legend>
+
+            <div class="field" id="fl-card">
+              <label for="card">診察券番号<span class="opt">任意</span></label>
+              <input type="text" id="card" inputmode="numeric" autocomplete="off" maxlength="15">
+              <p class="help">お持ちの方はご入力ください。</p>
+              <p class="errmsg">数字で入力してください。</p>
+            </div>
+
+            <div class="field" id="fl-name">
+              <label for="name">お名前<span class="req">必須</span></label>
+              <input type="text" id="name" autocomplete="name" maxlength="40" placeholder="例：山梨 花子">
+              <p class="errmsg">お名前を入力してください。</p>
+            </div>
+
+            <div class="field" id="fl-kana">
+              <label for="kana">ふりがな<span class="req">必須</span></label>
+              <input type="text" id="kana" maxlength="60" placeholder="例：やまなし はなこ">
+              <p class="errmsg">ひらがなで入力してください。</p>
+            </div>
+
+            <div class="field" id="fl-birth">
+              <span class="lb" id="lb-birth">生年月日<span class="req">必須</span></span>
+              <div class="row birth" role="group" aria-labelledby="lb-birth">
+                <select id="birthEra" aria-label="元号"><option value="">元号</option><option>昭和</option><option>平成</option><option>大正</option></select>
+                <select id="birthYear" aria-label="年"><option value="">年</option></select>
+                <select id="birthMonth" aria-label="月"><option value="">月</option></select>
+                <select id="birthDay" aria-label="日"><option value="">日</option></select>
+              </div>
+              <p class="help">対象は高校生以上の方（平成23年4月1日以前に生まれた方）です。</p>
+              <p class="errmsg" id="birthErr">生年月日を選んでください。</p>
+            </div>
+
+            <div class="field" id="fl-city">
+              <label for="city">お住まいの市町村<span class="req">必須</span></label>
+              <select id="city"><option value="">選んでください</option></select>
+              <p class="errmsg">お住まいの市町村を選んでください。</p>
+            </div>
+
+            <div class="field" id="fl-tel">
+              <label for="tel">日中につながる電話番号<span class="req">必須</span></label>
+              <input type="tel" id="tel" autocomplete="tel" inputmode="tel" maxlength="15" placeholder="例：090-1234-5678">
+              <p class="help">病院からこの番号にお電話します。</p>
+              <p class="errmsg">電話番号を正しく入力してください。</p>
+            </div>
+
+            <div class="field" id="fl-callTime">
+              <label for="callTime">つながりやすい時間帯<span class="opt">任意</span></label>
+              <select id="callTime">
+                <option value="">指定なし</option>
+                <option>午前（9時～12時）</option>
+                <option>午後（13時～17時）</option>
+              </select>
+            </div>
+
+            <div class="field" id="fl-note">
+              <label for="note">病院への連絡事項<span class="opt">任意</span></label>
+              <textarea id="note" maxlength="200" placeholder="例：家族が代わりに電話に出ます"></textarea>
+            </div>
+
+            <div class="hp" aria-hidden="true"><label>ウェブサイト<input type="text" id="website" tabindex="-1" autocomplete="off"></label></div>
+          </fieldset>
+
+          <div class="block" id="fl-agree">
+            <p class="bt">個人情報の取り扱い</p>
+            <p class="policy" style="clear:both">ご入力いただいた情報は、ワクチン接種の予約・連絡・接種の実施のためにのみ使用し、当院の個人情報保護方針に基づいて適切に管理します。</p>
+            <label class="check"><input type="checkbox" id="agree"><span>上記に同意します</span></label>
+            <p class="errmsg">同意にチェックを入れてください。</p>
+            <div class="btns"><button type="submit" class="btn primary">入力内容を確認する</button></div>
+          </div>
+        </div>
+      </form>
+
+      <!-- 確認画面 -->
+      <div id="confirmView" class="hidden">
+        <h2 style="margin-top:24px" tabindex="-1" id="confirmTitle">入力内容の確認</h2>
+        <p>内容をご確認のうえ「この内容で送信する」を押してください。</p>
+        <div class="scroll"><table class="confirm" id="confirmTable"></table></div>
+        <div id="sendError" class="alert err hidden" role="alert"></div>
+        <div class="btns">
+          <button type="button" class="btn primary" id="sendBtn">この内容で送信する</button>
+          <button type="button" class="btn secondary" id="backBtn">入力画面に戻る</button>
+        </div>
+      </div>
+
+      <!-- 完了画面 -->
+      <div id="doneView" class="hidden">
+        <div class="done">
+          <h2 tabindex="-1" id="doneTitle">送信しました</h2>
+          <p style="margin:0">受付番号</p>
+          <p class="receipt" id="receiptNo"></p>
+          <p class="reply" id="replyBy"></p>
+          <p>病院からお電話で接種日時をお知らせします。<strong>この時点では予約は確定していません。</strong></p>
+          <p class="note">期限を過ぎてもお電話がない場合は、お手数ですが受付番号をお伝えのうえ、病院までお問い合わせください。この画面を閉じる前に、受付番号を控えておくと安心です。</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>加納岩総合病院</p>
+    <p>電話受付：月～土曜日 9:00～17:00（日曜・祝日を除く）</p>
+    <p>WEBからの送信は24時間受け付けています。</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   設定：GASをウェブアプリとしてデプロイしたURLを貼り付けてください。
+   空欄のままだとデモ表示になります（送信は保存されません）。
+   ============================================================ */
+const APP = {
+  GAS_URL: '',
+  HOSPITAL_TEL: '0553-22-2511',
+  MAX_CHOICES: 3,
+  BIRTH_LIMIT: new Date(2011, 3, 1), // 高校生以上：平成23年4月1日以前に生まれた方
+};
+
+const CITIES = ['山梨市','甲州市','笛吹市','甲府市','大月市','韮崎市','南アルプス市','北杜市','甲斐市','中央市','上野原市','富士吉田市','都留市',
+  '市川三郷町','早川町','身延町','南部町','富士川町','昭和町','道志村','西桂町','忍野村','山中湖村','鳴沢村','富士河口湖町','小菅村','丹波山村','山梨県外'];
+const ERA = { '大正': { base:1911, max:15 }, '昭和': { base:1925, max:64 }, '平成': { base:1988, max:23 } };
+const TYPE = { flu:'インフルエンザ', covid:'新型コロナ' };
+
+const $ = s => document.querySelector(s);
+const state = { slots:{ flu:[], covid:[] }, payload:null, sending:false };
+const demo = !APP.GAS_URL;
+
+/* ---------- 初期化 ---------- */
+init();
+
+function init(){
+  $('#telLink').textContent = APP.HOSPITAL_TEL;
+  $('#telLink').href = 'tel:' + APP.HOSPITAL_TEL.replace(/-/g,'');
+  $('#city').insertAdjacentHTML('beforeend', CITIES.map(c => `<option>${c}</option>`).join(''));
+  for (let m=1; m<=12; m++) $('#birthMonth').add(new Option(m + '月', m));
+  $('#birthEra').addEventListener('change', fillYears);
+  $('#birthMonth').addEventListener('change', fillDays);
+  $('#birthYear').addEventListener('change', fillDays);
+  fillDays();
+
+  document.querySelectorAll('input[name=vaccines]').forEach(el => el.addEventListener('change', onVaccineChange));
+  document.querySelectorAll('input,select,textarea').forEach(el => el.addEventListener('change', () => el.closest('.field, .block')?.classList.remove('invalid')));
+  $('#form').addEventListener('submit', onConfirm);
+  $('#backBtn').addEventListener('click', () => show('form'));
+  $('#sendBtn').addEventListener('click', onSend);
+  if (demo) $('#demoBar').classList.remove('hidden');
+  loadSlots();
+}
+
+function fillYears(){
+  const era = ERA[$('#birthEra').value];
+  const sel = $('#birthYear');
+  sel.length = 1;
+  if (!era) return fillDays();
+  for (let y=1; y<=era.max; y++) sel.add(new Option(`${y===1?'元':y}年（${era.base+y}年）`, y));
+  fillDays();
+}
+function fillDays(){
+  const era = ERA[$('#birthEra').value];
+  const y = era ? era.base + Number($('#birthYear').value || 1) : 2000;
+  const m = Number($('#birthMonth').value || 1);
+  const last = new Date(y, m, 0).getDate();
+  const sel = $('#birthDay'); const keep = sel.value;
+  sel.length = 1;
+  for (let d=1; d<=last; d++) sel.add(new Option(d + '日', d));
+  if (keep && keep <= last) sel.value = keep;
+}
+
+/* ---------- 枠の読み込み ---------- */
+async function loadSlots(){
+  const st = $('#status');
+  try {
+    const data = demo ? demoSlots() : await (await fetch(APP.GAS_URL + '?action=slots', { cache:'no-store' })).json();
+    if (!data.ok) throw new Error();
+    if (!data.receptionOpen){
+      const d = new Date(data.receptionStart);
+      st.textContent = `WEB受付は ${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')} から開始します。`;
+      return;
+    }
+    state.slots = { flu:data.flu || [], covid:data.covid || [] };
+    if (!state.slots.flu.length && !state.slots.covid.length){
+      st.textContent = '現在、WEBで受け付けできる日時はありません。お電話でお問い合わせください（' + APP.HOSPITAL_TEL + '）。';
+      return;
+    }
+    st.classList.add('hidden');
+    $('#formBody').classList.remove('hidden');
+    ['flu','covid'].forEach(t => {
+      const box = document.querySelector(`input[name=vaccines][value=${t}]`);
+      if (!state.slots[t].length){
+        box.disabled = true;
+        box.closest('.check').querySelector('small').textContent = 'WEB受付は終了しました（定員または受付期限）';
+        box.closest('.check').style.opacity = .55;
+      }
+    });
+    renderChoices('flu'); renderChoices('covid');
+  } catch(e){
+    st.classList.replace('info','err');
+    st.textContent = '受付中の日時を読み込めませんでした。時間をおいてページを再読み込みするか、お電話でお問い合わせください（' + APP.HOSPITAL_TEL + '）。';
+  }
+}
+
+function renderChoices(type){
+  const wrap = $('#' + type + '-choices');
+  const prev = [...wrap.querySelectorAll('select')].map(s => s.value);
+  const list = state.slots[type];
+  const byMonth = {};
+  list.forEach(s => { const m = Number(s.date.slice(5,7)) + '月'; (byMonth[m] = byMonth[m] || []).push(s); });
+  const opts = Object.entries(byMonth).map(([m, arr]) =>
+    `<optgroup label="${m}">${arr.map(s => `<option value="${esc(s.id)}">${esc(s.label)}</option>`).join('')}</optgroup>`).join('');
+  wrap.innerHTML = [...Array(APP.MAX_CHOICES)].map((_, i) => `
+    <div class="choice">
+      <label class="rk" for="${type}-${i}">第${i+1}希望</label>
+      <select id="${type}-${i}" data-type="${type}"><option value="">${i===0 ? '選んでください' : '選ばない'}</option>${opts}</select>
+    </div>`).join('');
+  wrap.querySelectorAll('select').forEach((s, i) => {
+    if (prev[i] && list.some(x => x.id === prev[i])) s.value = prev[i];
+    s.addEventListener('change', () => syncChoices(type));
+  });
+  syncChoices(type);
+}
+
+/* 同じ日時を重複して選べないようにする */
+function syncChoices(type){
+  const sels = [...document.querySelectorAll(`select[data-type=${type}]`)];
+  const chosen = sels.map(s => s.value);
+  sels.forEach((s, i) => {
+    [...s.options].forEach(o => { if (o.value) o.disabled = chosen.some((c, j) => j !== i && c === o.value); });
+  });
+}
+
+function onVaccineChange(){
+  const v = checkedVaccines();
+  $('#f-slots').classList.toggle('hidden', !v.length);
+  $('#g-flu').classList.toggle('hidden', !v.includes('flu'));
+  $('#g-covid').classList.toggle('hidden', !v.includes('covid'));
+}
+function checkedVaccines(){ return [...document.querySelectorAll('input[name=vaccines]:checked')].map(x => x.value); }
+
+/* ---------- 入力チェック ---------- */
+function collect(){
+  const v = checkedVaccines();
+  const picks = t => [...document.querySelectorAll(`select[data-type=${t}]`)].map(s => s.value).filter(Boolean);
+  return {
+    vaccines: v,
+    flu: v.includes('flu') ? picks('flu') : [],
+    covid: v.includes('covid') ? picks('covid') : [],
+    covidDone: v.includes('covid') ? (document.querySelector('input[name=covidDone]:checked')?.value || '') : '',
+    card: toHalf($('#card').value.trim()),
+    name: $('#name').value.trim(),
+    kana: kataToHira($('#kana').value.trim()),
+    birthEra: $('#birthEra').value,
+    birthYear: Number($('#birthYear').value) || 0,
+    birthMonth: Number($('#birthMonth').value) || 0,
+    birthDay: Number($('#birthDay').value) || 0,
+    city: $('#city').value,
+    tel: toHalf($('#tel').value.trim()).replace(/[‐－―ー−]/g,'-').replace(/[^\d-]/g,''),
+    callTime: $('#callTime').value,
+    note: $('#note').value.trim(),
+    agree: $('#agree').checked,
+    website: $('#website').value,
+  };
+}
+
+function validate(d){
+  const bad = [];
+  const mark = (id, msg) => { const el = $('#' + id); el.classList.add('invalid'); if (msg) el.querySelector('.errmsg').textContent = msg; bad.push(el); };
+  document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+
+  if (!d.vaccines.length) mark('f-vaccine');
+  if (d.vaccines.includes('flu') && !d.flu.length) mark('fl-flu');
+  if (d.vaccines.includes('covid') && !d.covid.length) mark('fl-covid');
+  if (d.vaccines.includes('covid') && !d.covidDone) mark('fl-covidDone');
+  if (d.card && !/^[0-9A-Za-z-]{1,15}$/.test(d.card)) mark('fl-card');
+  if (!d.name) mark('fl-name');
+  if (!d.kana || !/^[ぁ-ゖー\s　]+$/.test(d.kana)) mark('fl-kana');
+  if (!d.birthEra || !d.birthYear || !d.birthMonth || !d.birthDay) mark('fl-birth', '生年月日を選んでください。');
+  else {
+    const b = new Date(ERA[d.birthEra].base + d.birthYear, d.birthMonth - 1, d.birthDay);
+    if (b > APP.BIRTH_LIMIT) mark('fl-birth', '接種の対象は高校生以上の方です。');
+  }
+  if (!d.city) mark('fl-city');
+  if (!/^0\d{9,10}$/.test(d.tel.replace(/-/g,''))) mark('fl-tel');
+  if (!d.agree) mark('fl-agree');
+  return bad;
+}
+
+function onConfirm(e){
+  e.preventDefault();
+  const d = collect();
+  const bad = validate(d);
+  const fe = $('#formError');
+  if (bad.length){
+    fe.textContent = `入力内容を確認してください（${bad.length}か所）。赤く表示された項目を修正してください。`;
+    fe.classList.remove('hidden');
+    bad[0].scrollIntoView({ block:'center' });
+    const f = bad[0].querySelector('input,select,textarea'); if (f) f.focus({ preventScroll:true });
+    return;
+  }
+  fe.classList.add('hidden');
+  state.payload = d;
+  renderConfirm(d);
+  show('confirm');
+}
+
+function renderConfirm(d){
+  const rows = [['希望ワクチン', d.vaccines.map(v => TYPE[v]).join('・')]];
+  if (d.flu.length) rows.push(['インフルエンザ', d.flu.map((x, i) => `第${i+1}希望　${x}`).join('<br>')]);
+  if (d.covid.length){
+    rows.push(['新型コロナ', d.covid.map((x, i) => `第${i+1}希望　${x}`).join('<br>')]);
+    rows.push(['本年度の<br>コロナ接種', d.covidDone]);
+  }
+  rows.push(['診察券番号', d.card || '（未入力）'], ['お名前', `${esc(d.name)}（${esc(d.kana)}）`],
+    ['生年月日', `${d.birthEra}${d.birthYear===1?'元':d.birthYear}年${d.birthMonth}月${d.birthDay}日`],
+    ['市町村', d.city], ['電話番号', d.tel], ['時間帯', d.callTime || '指定なし'], ['連絡事項', esc(d.note) || 'なし']);
+  $('#confirmTable').innerHTML = rows.map(([k, v]) => `<tr><th scope="row">${k}</th><td>${v}</td></tr>`).join('');
+  $('#sendError').classList.add('hidden');
+}
+
+/* ---------- 送信 ---------- */
+async function onSend(){
+  if (state.sending) return;
+  state.sending = true;
+  const btn = $('#sendBtn'); btn.disabled = true; btn.textContent = '送信しています…';
+  try {
+    let res;
+    if (demo){
+      await new Promise(r => setTimeout(r, 700));
+      res = { ok:true, receiptNo:'R8-0000（デモ）', replyBy: demoReplyBy() };
+    } else {
+      const r = await fetch(APP.GAS_URL, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify(state.payload) });
+      res = await r.json();
+    }
+    if (res.ok){
+      $('#receiptNo').textContent = res.receiptNo;
+      $('#replyBy').textContent = `${res.replyBy}までに、病院からお電話します。`;
+      show('done');
+      return;
+    }
+    if (res.code === 'SLOT_FULL'){
+      await loadSlots();
+      show('form');
+      const fe = $('#formError'); fe.textContent = res.message; fe.classList.remove('hidden'); fe.focus();
+      return;
+    }
+    throw new Error(res.message || '');
+  } catch(e){
+    const se = $('#sendError');
+    se.textContent = (e.message ? e.message + '\n' : '') + '送信できませんでした。通信状況をご確認のうえ、もう一度「この内容で送信する」を押してください。解決しない場合はお電話でお問い合わせください（' + APP.HOSPITAL_TEL + '）。';
+    se.classList.remove('hidden');
+  } finally {
+    state.sending = false; btn.disabled = false; btn.textContent = 'この内容で送信する';
+  }
+}
+
+function show(view){
+  $('#form').classList.toggle('hidden', view !== 'form');
+  $('#confirmView').classList.toggle('hidden', view !== 'confirm');
+  $('#doneView').classList.toggle('hidden', view !== 'done');
+  $('#form-top').scrollIntoView();
+  const t = { confirm:'#confirmTitle', done:'#doneTitle' }[view];
+  if (t) $(t).focus({ preventScroll:true });
+}
+
+/* ---------- ユーティリティ ---------- */
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toHalf(s){ return s.replace(/[０-９Ａ-Ｚａ-ｚ－]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)); }
+function kataToHira(s){ return s.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60)); }
+
+/* ---------- デモ用（GAS未接続時のみ使用） ---------- */
+function demoSlots(){
+  const w = '日月火水木金土', closed = ['2026-10-12','2026-11-03','2026-11-23'];
+  const lbl = (d, t) => `${d.getMonth()+1}月${d.getDate()}日（${w[d.getDay()]}）${t}`;
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const flu = [];
+  for (let d = new Date(2026,9,20); d <= new Date(2026,11,8); d.setDate(d.getDate()+1)){
+    if (![1,2,4].includes(d.getDay()) || closed.includes(iso(d))) continue;
+    ['15:00','15:30'].forEach(t => flu.push({ id:lbl(d,t), label:lbl(d,t), date:iso(d) }));
+  }
+  const covid = [[10,14],[10,28],[11,5],[11,19]].map(([m, dd]) => { const d = new Date(2026,m,dd); return { id:lbl(d,'14:00'), label:lbl(d,'14:00'), date:iso(d) }; });
+  return { ok:true, receptionOpen:true, receptionStart:'2026-10-01T09:00:00', flu: flu.filter((_, i) => i !== 1 && i !== 2), covid };
+}
+function demoReplyBy(){
+  const d = new Date(); let n = 2;
+  while (n > 0){ d.setDate(d.getDate()+1); if (d.getDay() !== 0) n--; }
+  return `${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）`;
+}
+</script>
+</body>
+</html>
