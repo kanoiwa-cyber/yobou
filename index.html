@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>令和8年度 インフルエンザ・新型コロナワクチン 接種希望日のWEB受付｜加納岩総合病院</title>
-<meta name="description" content="加納岩総合病院のインフルエンザ・新型コロナワクチン接種希望日をWEBで受け付けます。送信後、2診療日以内に病院から電話でご連絡します。">
+<meta name="description" content="加納岩総合病院のインフルエンザ・新型コロナワクチン接種希望日をWEBで受け付けます。送信後、2診療日以内に病院からお電話でご連絡します。">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,6 +71,7 @@ table.info{width:100%;border-collapse:collapse;font-size:16px;min-width:520px}
 table.info th,table.info td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
 table.info thead th{background:var(--tint);font-weight:700}
 table.info tbody th{background:#f7fafb;width:8.5em;font-weight:700;white-space:nowrap}
+.start{margin:0 0 12px;font-size:17px}
 .note{font-size:15px;color:var(--sub);margin:8px 0 0}
 dl.kv{margin:0;display:grid;grid-template-columns:7em 1fr;border-top:1px solid var(--line);font-size:16px}
 dl.kv dt,dl.kv dd{margin:0;padding:10px 4px;border-bottom:1px solid var(--line)}
@@ -174,7 +175,7 @@ footer p{margin:2px 0}
 <header class="site">
   <div class="wrap">
     <div class="name">加納岩総合病院</div>
-    <div class="tel">お電話でのご予約・お問い合わせ<br><a id="telLink" href="tel:0553222511">0553-22-2511</a>（月～土 9:00～17:00）</div>
+    <div class="tel">お電話・窓口でのご予約・お問い合わせ<br><a id="telLink" href="tel:0553222511">0553-22-2511</a>（月～土 9:00～17:00）</div>
   </div>
 </header>
 
@@ -194,6 +195,7 @@ footer p{margin:2px 0}
 
   <section class="wrap" aria-labelledby="h-schedule">
     <h2 id="h-schedule">接種日程</h2>
+    <p class="start">予約の受付は <b>10月1日（木）9:00</b> から開始します（WEB・電話・窓口とも）。</p>
     <div class="scroll">
       <table class="info">
         <thead><tr><th scope="col"></th><th scope="col">インフルエンザ</th><th scope="col">新型コロナ</th></tr></thead>
@@ -382,8 +384,8 @@ footer p{margin:2px 0}
 <footer>
   <div class="wrap">
     <p>加納岩総合病院</p>
-    <p>電話受付：月～土曜日 9:00～17:00（日曜・祝日を除く）</p>
-    <p>WEBからの送信は24時間受け付けています。</p>
+    <p>電話・窓口受付：月～土曜日 9:00～17:00（日曜・祝日を除く）</p>
+    <p>WEBからの送信は、10月1日（木）9:00以降、24時間受け付けています。</p>
     <div class="staff-link"><a href="staff.html" rel="nofollow">職員用：予約枠の調整</a></div>
   </div>
 </footer>
@@ -662,7 +664,7 @@ function demoSlots(){
     ['15:00','15:30'].forEach(t => flu.push({ id:lbl(d,t), label:lbl(d,t), date:iso(d) }));
   }
   const covid = [[10,14],[10,28],[11,5],[11,19]].map(([m, dd]) => { const d = new Date(2026,m,dd); return { id:lbl(d,'14:00'), label:lbl(d,'14:00'), date:iso(d) }; });
-  return { ok:true, receptionOpen:true, receptionStart:'2026-10-01T08:30:00', flu: flu.filter((_, i) => i !== 1 && i !== 2), covid };
+  return { ok:true, receptionOpen:true, receptionStart:'2026-10-01T09:00:00', flu: flu.filter((_, i) => i !== 1 && i !== 2), covid };
 }
 function demoReplyBy(){
   const d = new Date(); let n = 2;
