@@ -452,6 +452,7 @@ async function loadSlots(){
   try {
     const data = demo ? demoSlots() : await (await fetch(APP.GAS_URL + '?action=slots', { cache:'no-store' })).json();
     if (!data.ok) throw new Error();
+    if (data.testMode){ const bar = $('#demoBar'); bar.textContent = 'テスト受付中（送信内容はテストデータとして登録されます）'; bar.classList.remove('hidden'); }
     if (!data.receptionOpen){
       const d = new Date(data.receptionStart);
       st.textContent = `WEB受付は ${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')} から開始します。`;
