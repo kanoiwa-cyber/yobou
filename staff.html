@@ -268,7 +268,12 @@ document.querySelectorAll('input[name=ftype]').forEach(el => el.addEventListener
 $('#showPast').addEventListener('change', render);
 
 function cur(s){ return st.edits[s.label] || { cap:s.cap, stop:s.stop }; }
-function dtLabel(s){ const d = new Date(s.date + 'T00:00:00'); return `${d.getMonth()+1}月${d.getDate()}日（${W[d.getDay()]}）${s.time}`; }
+function dtLabel(s){
+  const d = new Date(s.date + 'T00:00:00');
+  // 時刻は枠名（例：10月20日（火）15:00）の末尾から取り出す
+  const m = String(s.label).match(/(\d{1,2}:\d{2})\s*$/) || String(s.time).match(/(\d{1,2}:\d{2})/);
+  return `${d.getMonth()+1}月${d.getDate()}日（${W[d.getDay()]}） ${m ? m[1] : ''}`;
+}
 function fmtDT(iso){ if (!iso) return ''; const d = new Date(iso); return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`; }
 function viewState(s, c){
   if (c.stop) return '電話受付';
