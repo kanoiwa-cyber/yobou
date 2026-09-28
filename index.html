@@ -390,7 +390,7 @@ footer p{margin:2px 0}
    空欄のままだとデモ表示になります（送信は保存されません）。
    ============================================================ */
 const APP = {
-  GAS_URL: '',
+  GAS_URL: 'https://script.google.com/macros/s/AKfycbwEadBkc-WP-wxCLumldiEtMuOFPkTtIeTpO2zORXrc7YnO2QqR2sQIRusDel_FD3JQ/exec',
   HOSPITAL_TEL: '0553-22-2511',
   MAX_CHOICES: 3,
   BIRTH_LIMIT: new Date(2011, 3, 1), // 高校生以上：平成23年4月1日以前に生まれた方
@@ -657,7 +657,7 @@ function demoSlots(){
     ['15:00','15:30'].forEach(t => flu.push({ id:lbl(d,t), label:lbl(d,t), date:iso(d) }));
   }
   const covid = [[10,14],[10,28],[11,5],[11,19]].map(([m, dd]) => { const d = new Date(2026,m,dd); return { id:lbl(d,'14:00'), label:lbl(d,'14:00'), date:iso(d) }; });
-  return { ok:true, receptionOpen:true, receptionStart:'2026-10-01T09:00:00', flu: flu.filter((_, i) => i !== 1 && i !== 2), covid };
+  return { ok:true, receptionOpen:true, receptionStart:'2026-10-01T08:30:00', flu: flu.filter((_, i) => i !== 1 && i !== 2), covid };
 }
 function demoReplyBy(){
   const d = new Date(); let n = 2;
