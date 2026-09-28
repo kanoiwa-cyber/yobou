@@ -26,6 +26,7 @@ body{margin:0;background:#f5f8f9;color:var(--ink);font-family:"BIZ UDPGothic","H
 header{background:#fff;border-top:6px solid var(--main);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 header .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
 header h1{font-size:20px;margin:0}
+header .back{font-size:14px;color:var(--main);margin-left:auto;margin-right:8px}
 header h1 small{display:block;font-size:14px;font-weight:400;color:var(--sub)}
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--sub)}
 button{font:inherit;cursor:pointer}
@@ -119,6 +120,7 @@ dialog::backdrop{background:rgba(20,30,35,.45)}
 <header>
   <div class="wrap">
     <h1><small>加納岩総合病院 職員用</small>ワクチンWEB予約枠の調整</h1>
+    <a class="back" href="./">受付ページを開く</a>
     <div class="tools hidden" id="tools">
       <span id="loadedAt"></span>
       <button class="btn quiet" id="reloadBtn" type="button">最新の状態を読み込む</button>
