@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>令和8年度 インフルエンザ・新型コロナワクチン 接種希望日のWEB受付｜加納岩総合病院</title>
-<meta name="description" content="加納岩総合病院のインフルエンザ・新型コロナワクチン接種希望日をWEBで受け付けます。送信後、2診療日以内に病院から電話でご連絡します。">
+<title>令和8年度 インフルエンザ・新型コロナワクチン WEB予約｜加納岩総合病院</title>
+<meta name="description" content="加納岩総合病院のインフルエンザ・新型コロナワクチン接種をWEBで予約できます。空いている日時を選ぶと、その場で予約が確定します。">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,7 +90,7 @@ fieldset{border:none;margin:0;padding:0}
 .req{background:var(--err);color:#fff}
 .opt{background:#e3e8ea;color:var(--sub)}
 .help{font-size:15px;color:var(--sub);margin:4px 0 0}
-input[type=text],input[type=tel],select,textarea{
+input[type=text],input[type=tel],input[type=email],select,textarea{
   width:100%;font:inherit;font-size:18px;color:var(--ink);background:#fff;
   border:1.5px solid #9fb2b9;border-radius:var(--radius);padding:10px 12px;min-height:50px;
 }
@@ -145,7 +145,15 @@ table.confirm th{background:#f7fafb;width:8.5em;white-space:nowrap}
 .done{background:#fff;border:2px solid var(--main);border-radius:var(--radius);padding:22px 20px;margin:24px 0}
 .done h2{border:none;padding:0;margin:0 0 8px}
 .receipt{font-size:28px;font-weight:700;letter-spacing:1px;color:var(--main-dark)}
-.reply{font-size:20px;font-weight:700;margin:6px 0 12px}
+.booked{margin:14px 0;display:grid;gap:10px}
+.booked div{border:2px solid var(--main);border-radius:var(--radius);padding:12px 16px;background:#f2f8f9}
+.booked .vt{display:block;font-size:15px;font-weight:700;color:var(--main-dark)}
+.booked .when{display:block;font-size:26px;font-weight:700;line-height:1.4}
+.booked .rc{display:block;font-size:15px;color:var(--sub)}
+.done ul{margin:6px 0 0;padding-left:1.3em;font-size:16px}
+.done h3{font-size:18px;margin:18px 0 4px}
+.tel-box{margin-top:16px;padding:12px 14px;background:var(--notice-bg);border-left:5px solid var(--notice-line);color:var(--notice-ink);font-size:16px}
+.tel-box a{font-weight:700;font-size:19px;color:inherit}
 
 footer{border-top:1px solid var(--line);padding:22px 0 30px;font-size:15px;color:var(--sub)}
 footer p{margin:2px 0}
@@ -166,31 +174,35 @@ footer p{margin:2px 0}
   table.info tbody th{width:auto;white-space:normal;min-width:4.5em}
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto !important}}
-@media print{.form-area,.site .tel{display:none}}
+@media print{
+  #demoBar,.lead,section,footer,.site .tel,#printBtn{display:none !important}
+  .form-area{background:#fff;border:none;padding:0;margin:0}
+  body{font-size:14px}
+}
 </style>
 </head>
 <body>
-<div id="demoBar" class="demo hidden">デモ表示中（GASと未接続のため、送信は保存されません）</div>
+<div id="demoBar" class="demo hidden">デモ表示中（GASと未接続のため、予約は保存されません）</div>
 
 <header class="site">
   <div class="wrap">
     <div class="name">加納岩総合病院</div>
-    <div class="tel">お電話・窓口でのご予約・お問い合わせ<br><a id="telLink" href="tel:0553222511">0553-22-2511</a>（月～土 9:00～17:00）</div>
+    <div class="tel">お電話・窓口でのご予約・変更・お問い合わせ<br><a id="telLink" href="tel:0553222511">0553-22-2511</a>（月～土 9:00～17:00）</div>
   </div>
 </header>
 
 <main>
   <div class="wrap lead">
     <p class="year">令和8年度</p>
-    <h1><span class="nb">インフルエンザ・</span><span class="nb">新型コロナワクチン</span><br><span class="nb">接種希望日の</span><span class="nb">WEB受付</span></h1>
-    <p>ご希望の日時を3つまでお選びいただき、送信してください。</p>
+    <h1><span class="nb">インフルエンザ・</span><span class="nb">新型コロナワクチン</span><br><span class="nb">接種の</span><span class="nb">WEB予約</span></h1>
+    <p>空いている日時を選んで送信すると、その場で予約が確定します。</p>
 
-    <ol class="flow" aria-label="予約が確定するまでの流れ">
-      <li><div class="no" aria-hidden="true">1</div><div class="tx"><b>このページから希望日時を送信</b><span>第1～第3希望まで選べます</span></div></li>
-      <li><div class="no" aria-hidden="true">2</div><div class="tx"><b>2診療日以内に病院からお電話</b><span>診療日は月～土曜日です（日曜・祝日を除く）</span></div></li>
-      <li><div class="no" aria-hidden="true">3</div><div class="tx"><b>お電話で接種日時が決まります</b><span>当日の持ち物や料金もお伝えします</span></div></li>
+    <ol class="flow" aria-label="予約の流れ">
+      <li><div class="no" aria-hidden="true">1</div><div class="tx"><b>空いている日時を選ぶ</b><span>満員の日時は表示されません</span></div></li>
+      <li><div class="no" aria-hidden="true">2</div><div class="tx"><b>送信すると、その場で予約確定</b><span>画面にあなたの接種日時を表示します</span></div></li>
+      <li><div class="no" aria-hidden="true">3</div><div class="tx"><b>確認メールが届きます</b><span>当日の持ち物や料金をお知らせします</span></div></li>
     </ol>
-    <p class="caution">送信した時点では、予約は確定していません。病院からのお電話をお待ちください。</p>
+    <p class="caution">ご予約の変更・キャンセルは、お電話でご連絡ください（<span class="telText">0553-22-2511</span>）。</p>
   </div>
 
   <section class="wrap" aria-labelledby="h-schedule">
@@ -207,7 +219,7 @@ footer p{margin:2px 0}
         </tbody>
       </table>
     </div>
-    <p class="note">各日時とも人数に限りがあります。定員に達した日時と、受付期限を過ぎた日時は選択肢に表示されません。</p>
+    <p class="note">各日時とも人数に限りがあります。WEB予約は、接種日の2診療日前の17:00までです（診療日は月～土曜日、日曜・祝日を除く）。満員の日時や締切を過ぎた日時は、お電話でお問い合わせください。</p>
   </section>
 
   <section class="wrap" aria-labelledby="h-public">
@@ -239,34 +251,41 @@ footer p{margin:2px 0}
 
       <!-- 入力画面 -->
       <form id="form" novalidate>
-        <h2 style="margin-top:24px">接種希望日の入力</h2>
-        <div id="status" class="alert info" role="status">受付中の日時を読み込んでいます…</div>
+        <h2 style="margin-top:24px">ご予約の入力</h2>
+        <div id="status" class="alert info" role="status">予約できる日時を読み込んでいます…</div>
         <div id="formError" class="alert err hidden" role="alert" tabindex="-1"></div>
 
         <div id="formBody" class="hidden">
           <fieldset class="block" id="f-vaccine">
-            <legend>希望するワクチン<span class="req">必須</span></legend>
+            <legend>予約するワクチン<span class="req">必須</span></legend>
             <div class="field">
               <div class="checks">
                 <label class="check"><input type="checkbox" name="vaccines" value="flu"><span>インフルエンザ<small>10月20日～12月8日の月・火・木曜日</small></span></label>
                 <label class="check"><input type="checkbox" name="vaccines" value="covid"><span>新型コロナ<small>11月14日～12月19日の指定の土曜日</small></span></label>
               </div>
-              <p class="errmsg">希望するワクチンを選んでください。</p>
+              <p class="errmsg">予約するワクチンを選んでください。</p>
             </div>
           </fieldset>
 
           <fieldset class="block hidden" id="f-slots">
-            <legend>希望日時<span class="req">必須</span></legend>
-            <p class="help" style="margin:0 0 12px">第1希望は必ず選んでください。調整しやすくなるため、できるだけ3つお選びください。</p>
+            <legend>接種日時<span class="req">必須</span></legend>
+            <p class="help" style="margin:0 0 12px">表示されているのは、現在予約できる日時です。</p>
 
             <div class="vgroup hidden" id="g-flu">
-              <h3>インフルエンザ</h3>
-              <div class="field" id="fl-flu"><div id="flu-choices"></div><p class="errmsg">第1希望を選んでください。</p></div>
+              <div class="field" id="fl-flu">
+                <label for="flu">インフルエンザ</label>
+                <select id="flu"></select>
+                <p class="help">当日の受付は14:30からです。</p>
+                <p class="errmsg">接種日時を選んでください。</p>
+              </div>
             </div>
 
             <div class="vgroup hidden" id="g-covid">
-              <h3>新型コロナ</h3>
-              <div class="field" id="fl-covid"><div id="covid-choices"></div><p class="errmsg">第1希望を選んでください。</p></div>
+              <div class="field" id="fl-covid">
+                <label for="covid">新型コロナ</label>
+                <select id="covid"></select>
+                <p class="errmsg">接種日時を選んでください。</p>
+              </div>
               <div class="field" id="fl-covidDone">
                 <span class="lb">本年度（令和8年4月以降）に新型コロナワクチンを接種しましたか<span class="req">必須</span></span>
                 <div class="radios">
@@ -310,7 +329,7 @@ footer p{margin:2px 0}
                 <select id="birthDay" aria-label="日"><option value="">日</option></select>
               </div>
               <p class="help">対象は高校生以上の方（平成23年4月1日以前に生まれた方）です。</p>
-              <p class="errmsg" id="birthErr">生年月日を選んでください。</p>
+              <p class="errmsg">生年月日を選んでください。</p>
             </div>
 
             <div class="field" id="fl-city">
@@ -320,24 +339,28 @@ footer p{margin:2px 0}
             </div>
 
             <div class="field" id="fl-tel">
-              <label for="tel">日中につながる電話番号<span class="req">必須</span></label>
+              <label for="tel">電話番号<span class="req">必須</span></label>
               <input type="tel" id="tel" autocomplete="tel" inputmode="tel" maxlength="15" placeholder="例：090-1234-5678">
-              <p class="help">病院からこの番号にお電話します。</p>
+              <p class="help">病院からご連絡が必要な場合に使います。</p>
               <p class="errmsg">電話番号を正しく入力してください。</p>
             </div>
 
-            <div class="field" id="fl-callTime">
-              <label for="callTime">つながりやすい時間帯<span class="opt">任意</span></label>
-              <select id="callTime">
-                <option value="">指定なし</option>
-                <option>午前（9時～12時）</option>
-                <option>午後（13時～17時）</option>
-              </select>
+            <div class="field" id="fl-email">
+              <label for="email">メールアドレス<span class="req">必須</span></label>
+              <input type="email" id="email" autocomplete="email" inputmode="email" maxlength="100" placeholder="例：hanako@example.jp">
+              <p class="help">予約内容の確認メールをお送りします。ご家族のメールアドレスでも構いません。</p>
+              <p class="errmsg">メールアドレスを正しく入力してください。</p>
+            </div>
+
+            <div class="field" id="fl-email2">
+              <label for="email2">メールアドレス（確認のため、もう一度）<span class="req">必須</span></label>
+              <input type="email" id="email2" autocomplete="off" inputmode="email" maxlength="100">
+              <p class="errmsg">上のメールアドレスと一致しません。</p>
             </div>
 
             <div class="field" id="fl-note">
               <label for="note">病院への連絡事項<span class="opt">任意</span></label>
-              <textarea id="note" maxlength="200" placeholder="例：家族が代わりに電話に出ます"></textarea>
+              <textarea id="note" maxlength="200" placeholder="例：車いすで伺います"></textarea>
             </div>
 
             <div class="hp" aria-hidden="true"><label>ウェブサイト<input type="text" id="website" tabindex="-1" autocomplete="off"></label></div>
@@ -356,11 +379,11 @@ footer p{margin:2px 0}
       <!-- 確認画面 -->
       <div id="confirmView" class="hidden">
         <h2 style="margin-top:24px" tabindex="-1" id="confirmTitle">入力内容の確認</h2>
-        <p>内容をご確認のうえ「この内容で送信する」を押してください。</p>
+        <p>内容をご確認のうえ「この内容で予約する」を押してください。押した時点で予約が確定します。</p>
         <div class="scroll"><table class="confirm" id="confirmTable"></table></div>
         <div id="sendError" class="alert err hidden" role="alert"></div>
         <div class="btns">
-          <button type="button" class="btn primary" id="sendBtn">この内容で送信する</button>
+          <button type="button" class="btn primary" id="sendBtn">この内容で予約する</button>
           <button type="button" class="btn secondary" id="backBtn">入力画面に戻る</button>
         </div>
       </div>
@@ -368,12 +391,24 @@ footer p{margin:2px 0}
       <!-- 完了画面 -->
       <div id="doneView" class="hidden">
         <div class="done">
-          <h2 tabindex="-1" id="doneTitle">送信しました</h2>
-          <p style="margin:0">受付番号</p>
-          <p class="receipt" id="receiptNo"></p>
-          <p class="reply" id="replyBy"></p>
-          <p>病院からお電話で接種日時をお知らせします。<strong>この時点では予約は確定していません。</strong></p>
-          <p class="note">期限を過ぎてもお電話がない場合は、お手数ですが受付番号をお伝えのうえ、病院までお問い合わせください。この画面を閉じる前に、受付番号を控えておくと安心です。</p>
+          <h2 tabindex="-1" id="doneTitle">ご予約が確定しました</h2>
+          <p style="margin:0"><span id="doneName"></span> 様の接種日時は、次のとおりです。</p>
+          <div class="booked" id="booked"></div>
+          <p style="margin:0">受付番号：<b class="receipt" id="receiptNo" style="font-size:22px"></b></p>
+          <p id="mailMsg" style="margin:6px 0 0"></p>
+
+          <h3>当日お持ちいただくもの</h3>
+          <ul>
+            <li>診察券または保険証</li>
+            <li>予診票（問診票）…当日の体温を測り、記入してお持ちください</li>
+          </ul>
+
+          <div class="tel-box">
+            <b>ご予約の変更・キャンセルは、お電話でご連絡ください。</b><br>
+            <a class="telLink2" href="tel:0553222511">0553-22-2511</a>（月～土 9:00～17:00、日曜・祝日を除く）<br>
+            受付番号をお伝えいただくとスムーズです。
+          </div>
+          <div class="btns"><button type="button" class="btn secondary" id="printBtn">この画面を印刷する</button></div>
         </div>
       </div>
 
@@ -385,38 +420,39 @@ footer p{margin:2px 0}
   <div class="wrap">
     <p>加納岩総合病院</p>
     <p>電話・窓口受付：月～土曜日 9:00～17:00（日曜・祝日を除く）</p>
-    <p>WEBからの送信は、10月1日（木）9:00以降、24時間受け付けています。</p>
+    <p>WEB予約は、10月1日（木）9:00以降、24時間受け付けています。</p>
     <div class="staff-link"><a href="staff.html" rel="nofollow">職員用：予約枠の調整</a></div>
   </div>
 </footer>
 
 <script>
 /* ============================================================
-   設定：GASをウェブアプリとしてデプロイしたURLを貼り付けてください。
-   空欄のままだとデモ表示になります（送信は保存されません）。
+   設定：GASをウェブアプリとしてデプロイしたURL
+   空欄にするとデモ表示になります（予約は保存されません）。
    ============================================================ */
 const APP = {
   GAS_URL: 'https://script.google.com/macros/s/AKfycbwEadBkc-WP-wxCLumldiEtMuOFPkTtIeTpO2zORXrc7YnO2QqR2sQIRusDel_FD3JQ/exec',
   HOSPITAL_TEL: '0553-22-2511',
-  MAX_CHOICES: 3,
   BIRTH_LIMIT: new Date(2011, 3, 1), // 高校生以上：平成23年4月1日以前に生まれた方
+  FEW: 2,                            // 残りこの人数以下で「残りわずか」と表示
 };
 
 const CITIES = ['山梨市','甲州市','笛吹市','甲府市','大月市','韮崎市','南アルプス市','北杜市','甲斐市','中央市','上野原市','富士吉田市','都留市',
   '市川三郷町','早川町','身延町','南部町','富士川町','昭和町','道志村','西桂町','忍野村','山中湖村','鳴沢村','富士河口湖町','小菅村','丹波山村','山梨県外'];
 const ERA = { '大正': { base:1911, max:15 }, '昭和': { base:1925, max:64 }, '平成': { base:1988, max:23 } };
 const TYPE = { flu:'インフルエンザ', covid:'新型コロナ' };
+const RECEPTION_NOTE = { flu:'当日の受付は14:30からです', covid:'' };
 
 const $ = s => document.querySelector(s);
 const state = { slots:{ flu:[], covid:[] }, payload:null, sending:false };
 const demo = !APP.GAS_URL;
 
-/* ---------- 初期化 ---------- */
 init();
 
 function init(){
-  $('#telLink').textContent = APP.HOSPITAL_TEL;
-  $('#telLink').href = 'tel:' + APP.HOSPITAL_TEL.replace(/-/g,'');
+  const telHref = 'tel:' + APP.HOSPITAL_TEL.replace(/-/g,'');
+  document.querySelectorAll('#telLink,.telLink2').forEach(a => { a.textContent = APP.HOSPITAL_TEL; a.href = telHref; });
+  document.querySelectorAll('.telText').forEach(el => el.textContent = APP.HOSPITAL_TEL);
   $('#city').insertAdjacentHTML('beforeend', CITIES.map(c => `<option>${c}</option>`).join(''));
   for (let m=1; m<=12; m++) $('#birthMonth').add(new Option(m + '月', m));
   $('#birthEra').addEventListener('change', fillYears);
@@ -429,6 +465,7 @@ function init(){
   $('#form').addEventListener('submit', onConfirm);
   $('#backBtn').addEventListener('click', () => show('form'));
   $('#sendBtn').addEventListener('click', onSend);
+  $('#printBtn').addEventListener('click', () => window.print());
   if (demo) $('#demoBar').classList.remove('hidden');
   loadSlots();
 }
@@ -437,8 +474,7 @@ function fillYears(){
   const era = ERA[$('#birthEra').value];
   const sel = $('#birthYear');
   sel.length = 1;
-  if (!era) return fillDays();
-  for (let y=1; y<=era.max; y++) sel.add(new Option(`${y===1?'元':y}年（${era.base+y}年）`, y));
+  if (era) for (let y=1; y<=era.max; y++) sel.add(new Option(`${y===1?'元':y}年（${era.base+y}年）`, y));
   fillDays();
 }
 function fillDays(){
@@ -452,67 +488,49 @@ function fillDays(){
   if (keep && keep <= last) sel.value = keep;
 }
 
-/* ---------- 枠の読み込み ---------- */
+/* ---------- 予約できる日時の読み込み ---------- */
 async function loadSlots(){
   const st = $('#status');
   try {
     const data = demo ? demoSlots() : await (await fetch(APP.GAS_URL + '?action=slots', { cache:'no-store' })).json();
     if (!data.ok) throw new Error();
-    if (data.testMode){ const bar = $('#demoBar'); bar.textContent = 'テスト受付中（送信内容はテストデータとして登録されます）'; bar.classList.remove('hidden'); }
+    if (data.testMode){ const bar = $('#demoBar'); bar.textContent = 'テスト受付中（予約はテストデータとして登録されます）'; bar.classList.remove('hidden'); }
     if (!data.receptionOpen){
       const d = new Date(data.receptionStart);
-      st.textContent = `WEB受付は ${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')} から開始します。`;
+      st.textContent = `WEB予約は ${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')} から開始します。`;
       return;
     }
     state.slots = { flu:data.flu || [], covid:data.covid || [] };
     if (!state.slots.flu.length && !state.slots.covid.length){
-      st.textContent = '現在、WEBで受け付けできる日時はありません。お電話でお問い合わせください（' + APP.HOSPITAL_TEL + '）。';
+      st.textContent = '現在、WEBで予約できる日時はありません。お電話でお問い合わせください（' + APP.HOSPITAL_TEL + '）。';
       return;
     }
     st.classList.add('hidden');
     $('#formBody').classList.remove('hidden');
     ['flu','covid'].forEach(t => {
       const box = document.querySelector(`input[name=vaccines][value=${t}]`);
+      const card = box.closest('.check');
       if (!state.slots[t].length){
-        box.disabled = true;
-        box.closest('.check').querySelector('small').textContent = 'WEB受付は終了しました（定員または受付期限）';
-        box.closest('.check').style.opacity = .55;
+        box.checked = false; box.disabled = true; card.style.opacity = .55;
+        card.querySelector('small').textContent = 'WEBで予約できる日時はありません（お電話でお問い合わせください）';
       }
+      renderSelect(t);
     });
-    renderChoices('flu'); renderChoices('covid');
+    onVaccineChange();
   } catch(e){
     st.classList.replace('info','err');
-    st.textContent = '受付中の日時を読み込めませんでした。時間をおいてページを再読み込みするか、お電話でお問い合わせください（' + APP.HOSPITAL_TEL + '）。';
+    st.textContent = '予約できる日時を読み込めませんでした。時間をおいてページを再読み込みするか、お電話でお問い合わせください（' + APP.HOSPITAL_TEL + '）。';
   }
 }
 
-function renderChoices(type){
-  const wrap = $('#' + type + '-choices');
-  const prev = [...wrap.querySelectorAll('select')].map(s => s.value);
-  const list = state.slots[type];
+function renderSelect(type){
+  const sel = $('#' + type);
+  const keep = sel.value;
   const byMonth = {};
-  list.forEach(s => { const m = Number(s.date.slice(5,7)) + '月'; (byMonth[m] = byMonth[m] || []).push(s); });
-  const opts = Object.entries(byMonth).map(([m, arr]) =>
-    `<optgroup label="${m}">${arr.map(s => `<option value="${esc(s.id)}">${esc(s.label)}</option>`).join('')}</optgroup>`).join('');
-  wrap.innerHTML = [...Array(APP.MAX_CHOICES)].map((_, i) => `
-    <div class="choice">
-      <label class="rk" for="${type}-${i}">第${i+1}希望</label>
-      <select id="${type}-${i}" data-type="${type}"><option value="">${i===0 ? '選んでください' : '選ばない'}</option>${opts}</select>
-    </div>`).join('');
-  wrap.querySelectorAll('select').forEach((s, i) => {
-    if (prev[i] && list.some(x => x.id === prev[i])) s.value = prev[i];
-    s.addEventListener('change', () => syncChoices(type));
-  });
-  syncChoices(type);
-}
-
-/* 同じ日時を重複して選べないようにする */
-function syncChoices(type){
-  const sels = [...document.querySelectorAll(`select[data-type=${type}]`)];
-  const chosen = sels.map(s => s.value);
-  sels.forEach((s, i) => {
-    [...s.options].forEach(o => { if (o.value) o.disabled = chosen.some((c, j) => j !== i && c === o.value); });
-  });
+  state.slots[type].forEach(s => { const m = Number(s.date.slice(5,7)) + '月'; (byMonth[m] = byMonth[m] || []).push(s); });
+  sel.innerHTML = '<option value="">選んでください</option>' + Object.entries(byMonth).map(([m, arr]) =>
+    `<optgroup label="${m}">${arr.map(s => `<option value="${esc(s.id)}">${esc(s.label)}${s.remain <= APP.FEW ? '（残りわずか）' : ''}</option>`).join('')}</optgroup>`).join('');
+  if (keep && state.slots[type].some(s => s.id === keep)) sel.value = keep;
 }
 
 function onVaccineChange(){
@@ -522,15 +540,15 @@ function onVaccineChange(){
   $('#g-covid').classList.toggle('hidden', !v.includes('covid'));
 }
 function checkedVaccines(){ return [...document.querySelectorAll('input[name=vaccines]:checked')].map(x => x.value); }
+function slotLabel(type, id){ const s = state.slots[type].find(x => x.id === id); return s ? s.label : id; }
 
 /* ---------- 入力チェック ---------- */
 function collect(){
   const v = checkedVaccines();
-  const picks = t => [...document.querySelectorAll(`select[data-type=${t}]`)].map(s => s.value).filter(Boolean);
   return {
     vaccines: v,
-    flu: v.includes('flu') ? picks('flu') : [],
-    covid: v.includes('covid') ? picks('covid') : [],
+    flu: v.includes('flu') ? $('#flu').value : '',
+    covid: v.includes('covid') ? $('#covid').value : '',
     covidDone: v.includes('covid') ? (document.querySelector('input[name=covidDone]:checked')?.value || '') : '',
     card: toHalf($('#card').value.trim()),
     name: $('#name').value.trim(),
@@ -541,7 +559,8 @@ function collect(){
     birthDay: Number($('#birthDay').value) || 0,
     city: $('#city').value,
     tel: toHalf($('#tel').value.trim()).replace(/[‐－―ー−]/g,'-').replace(/[^\d-]/g,''),
-    callTime: $('#callTime').value,
+    email: toHalf($('#email').value.trim()).toLowerCase(),
+    email2: toHalf($('#email2').value.trim()).toLowerCase(),
     note: $('#note').value.trim(),
     agree: $('#agree').checked,
     website: $('#website').value,
@@ -554,19 +573,18 @@ function validate(d){
   document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
 
   if (!d.vaccines.length) mark('f-vaccine');
-  if (d.vaccines.includes('flu') && !d.flu.length) mark('fl-flu');
-  if (d.vaccines.includes('covid') && !d.covid.length) mark('fl-covid');
+  if (d.vaccines.includes('flu') && !d.flu) mark('fl-flu');
+  if (d.vaccines.includes('covid') && !d.covid) mark('fl-covid');
   if (d.vaccines.includes('covid') && !d.covidDone) mark('fl-covidDone');
   if (d.card && !/^[0-9A-Za-z-]{1,15}$/.test(d.card)) mark('fl-card');
   if (!d.name) mark('fl-name');
   if (!d.kana || !/^[ぁ-ゖー\s　]+$/.test(d.kana)) mark('fl-kana');
   if (!d.birthEra || !d.birthYear || !d.birthMonth || !d.birthDay) mark('fl-birth', '生年月日を選んでください。');
-  else {
-    const b = new Date(ERA[d.birthEra].base + d.birthYear, d.birthMonth - 1, d.birthDay);
-    if (b > APP.BIRTH_LIMIT) mark('fl-birth', '接種の対象は高校生以上の方です。');
-  }
+  else if (new Date(ERA[d.birthEra].base + d.birthYear, d.birthMonth - 1, d.birthDay) > APP.BIRTH_LIMIT) mark('fl-birth', '接種の対象は高校生以上の方です。');
   if (!d.city) mark('fl-city');
   if (!/^0\d{9,10}$/.test(d.tel.replace(/-/g,''))) mark('fl-tel');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) mark('fl-email');
+  else if (d.email !== d.email2) mark('fl-email2');
   if (!d.agree) mark('fl-agree');
   return bad;
 }
@@ -584,47 +602,45 @@ function onConfirm(e){
     return;
   }
   fe.classList.add('hidden');
+  delete d.email2;
   state.payload = d;
   renderConfirm(d);
   show('confirm');
 }
 
 function renderConfirm(d){
-  const rows = [['希望ワクチン', d.vaccines.map(v => TYPE[v]).join('・')]];
-  if (d.flu.length) rows.push(['インフルエンザ', d.flu.map((x, i) => `第${i+1}希望　${x}`).join('<br>')]);
-  if (d.covid.length){
-    rows.push(['新型コロナ', d.covid.map((x, i) => `第${i+1}希望　${x}`).join('<br>')]);
+  const rows = [];
+  if (d.flu) rows.push(['インフルエンザ', `<b>${esc(slotLabel('flu', d.flu))}</b><br><small>${RECEPTION_NOTE.flu}</small>`]);
+  if (d.covid){
+    rows.push(['新型コロナ', `<b>${esc(slotLabel('covid', d.covid))}</b>`]);
     rows.push(['本年度の<br>コロナ接種', d.covidDone]);
   }
-  rows.push(['診察券番号', d.card || '（未入力）'], ['お名前', `${esc(d.name)}（${esc(d.kana)}）`],
+  rows.push(['診察券番号', esc(d.card) || '（未入力）'], ['お名前', `${esc(d.name)}（${esc(d.kana)}）`],
     ['生年月日', `${d.birthEra}${d.birthYear===1?'元':d.birthYear}年${d.birthMonth}月${d.birthDay}日`],
-    ['市町村', d.city], ['電話番号', d.tel], ['時間帯', d.callTime || '指定なし'], ['連絡事項', esc(d.note) || 'なし']);
+    ['市町村', esc(d.city)], ['電話番号', esc(d.tel)], ['メール', esc(d.email)], ['連絡事項', esc(d.note) || 'なし']);
   $('#confirmTable').innerHTML = rows.map(([k, v]) => `<tr><th scope="row">${k}</th><td>${v}</td></tr>`).join('');
   $('#sendError').classList.add('hidden');
 }
 
-/* ---------- 送信 ---------- */
+/* ---------- 予約 ---------- */
 async function onSend(){
   if (state.sending) return;
   state.sending = true;
-  const btn = $('#sendBtn'); btn.disabled = true; btn.textContent = '送信しています…';
+  const btn = $('#sendBtn'); btn.disabled = true; btn.textContent = '予約しています…（10秒ほどかかります）';
   try {
     let res;
     if (demo){
       await new Promise(r => setTimeout(r, 700));
-      res = { ok:true, receiptNo:'R8-0000（デモ）', replyBy: demoReplyBy() };
+      const p = state.payload;
+      res = { ok:true, receiptNo:'R8-0000（デモ）', mailSent:true,
+        flu: p.flu ? slotLabel('flu', p.flu) : '', covid: p.covid ? slotLabel('covid', p.covid) : '' };
     } else {
       const r = await fetch(APP.GAS_URL, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify(state.payload) });
       res = await r.json();
     }
-    if (res.ok){
-      $('#receiptNo').textContent = res.receiptNo;
-      $('#replyBy').textContent = `${res.replyBy}までに、病院からお電話します。`;
-      show('done');
-      return;
-    }
-    if (res.code === 'SLOT_FULL'){
-      await loadSlots();
+    if (res.ok){ renderDone(res); show('done'); return; }
+    if (res.code === 'SLOT_FULL' || res.code === 'DUPLICATE'){
+      if (res.code === 'SLOT_FULL') await loadSlots();
       show('form');
       const fe = $('#formError'); fe.textContent = res.message; fe.classList.remove('hidden'); fe.focus();
       return;
@@ -632,11 +648,24 @@ async function onSend(){
     throw new Error(res.message || '');
   } catch(e){
     const se = $('#sendError');
-    se.textContent = (e.message ? e.message + '\n' : '') + '送信できませんでした。通信状況をご確認のうえ、もう一度「この内容で送信する」を押してください。解決しない場合はお電話でお問い合わせください（' + APP.HOSPITAL_TEL + '）。';
+    se.textContent = (e.message ? e.message + '\n' : '') + '予約できませんでした。通信状況をご確認のうえ、もう一度「この内容で予約する」を押してください。解決しない場合はお電話でお問い合わせください（' + APP.HOSPITAL_TEL + '）。';
     se.classList.remove('hidden');
   } finally {
-    state.sending = false; btn.disabled = false; btn.textContent = 'この内容で送信する';
+    state.sending = false; btn.disabled = false; btn.textContent = 'この内容で予約する';
   }
+}
+
+function renderDone(res){
+  const p = state.payload;
+  $('#doneName').textContent = p.name;
+  const cards = [];
+  if (res.flu) cards.push(`<div><span class="vt">インフルエンザ</span><span class="when">${esc(res.flu)}</span><span class="rc">${RECEPTION_NOTE.flu}</span></div>`);
+  if (res.covid) cards.push(`<div><span class="vt">新型コロナ</span><span class="when">${esc(res.covid)}</span></div>`);
+  $('#booked').innerHTML = cards.join('');
+  $('#receiptNo').textContent = res.receiptNo;
+  $('#mailMsg').textContent = res.mailSent
+    ? `予約内容の確認メールを ${p.email} にお送りしました。届かない場合は、迷惑メールフォルダもご確認ください。`
+    : '確認メールを送信できませんでした。この画面を印刷するか、受付番号と日時を控えてください。';
 }
 
 function show(view){
@@ -650,26 +679,21 @@ function show(view){
 
 /* ---------- ユーティリティ ---------- */
 function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function toHalf(s){ return s.replace(/[０-９Ａ-Ｚａ-ｚ－]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)); }
+function toHalf(s){ return s.replace(/[０-９Ａ-Ｚａ-ｚ－＠．＿]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)); }
 function kataToHira(s){ return s.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60)); }
 
-/* ---------- デモ用（GAS未接続時のみ使用） ---------- */
+/* ---------- デモ用（GAS未接続時のみ） ---------- */
 function demoSlots(){
   const w = '日月火水木金土', closed = ['2026-10-12','2026-11-03','2026-11-23'];
-  const lbl = (d, t) => `${d.getMonth()+1}月${d.getDate()}日（${w[d.getDay()]}）${t}`;
+  const lbl = (d, t) => `${d.getMonth()+1}月${d.getDate()}日（${w[d.getDay()]}） ${t}`;
   const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   const flu = [];
   for (let d = new Date(2026,9,20); d <= new Date(2026,11,8); d.setDate(d.getDate()+1)){
     if (![1,2,4].includes(d.getDay()) || closed.includes(iso(d))) continue;
-    ['15:00','15:30'].forEach(t => flu.push({ id:lbl(d,t), label:lbl(d,t), date:iso(d) }));
+    ['15:00','15:30'].forEach((t, i) => flu.push({ id:lbl(d,t), label:lbl(d,t), date:iso(d), remain: (flu.length % 5) + 1 }));
   }
-  const covid = [[10,14],[10,28],[11,5],[11,19]].map(([m, dd]) => { const d = new Date(2026,m,dd); return { id:lbl(d,'14:00'), label:lbl(d,'14:00'), date:iso(d) }; });
-  return { ok:true, receptionOpen:true, receptionStart:'2026-10-01T09:00:00', flu: flu.filter((_, i) => i !== 1 && i !== 2), covid };
-}
-function demoReplyBy(){
-  const d = new Date(); let n = 2;
-  while (n > 0){ d.setDate(d.getDate()+1); if (d.getDay() !== 0) n--; }
-  return `${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）`;
+  const covid = [[10,14],[10,28],[11,5],[11,19]].map(([m, dd]) => { const d = new Date(2026,m,dd); return { id:lbl(d,'14:00'), label:lbl(d,'14:00'), date:iso(d), remain:5 }; });
+  return { ok:true, receptionOpen:true, receptionStart:'2026-10-01T09:00:00', flu, covid };
 }
 </script>
 </body>
