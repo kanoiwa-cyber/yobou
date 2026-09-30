@@ -154,6 +154,26 @@ table.confirm th{background:#f7fafb;width:8.5em;white-space:nowrap}
 .done h3{font-size:18px;margin:18px 0 4px}
 .tel-box{margin-top:16px;padding:12px 14px;background:var(--notice-bg);border-left:5px solid var(--notice-line);color:var(--notice-ink);font-size:16px}
 .tel-box a{font-weight:700;font-size:19px;color:inherit}
+.manage{background:var(--tint);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-top:22px}
+.manage h2{border:none;padding:0;margin:0 0 4px;font-size:20px}
+.manage p{margin:0 0 12px;font-size:16px}
+.mbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mbtns .btn{font-size:18px;min-height:56px;padding:12px}
+.btn.danger{border-color:var(--err);color:var(--err);background:#fff}
+.btn.danger.fill{background:var(--err);color:#fff}
+.rcard{background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);padding:16px;margin:14px 0}
+.rcard .vt{font-size:15px;font-weight:700;color:var(--main-dark)}
+.rcard .when{font-size:24px;font-weight:700;line-height:1.4;margin:2px 0}
+.rcard .dl{font-size:15px;color:var(--sub);margin:0 0 10px}
+.rcard .closed{background:var(--notice-bg);color:var(--notice-ink);border-radius:var(--radius);padding:10px 12px;font-size:15px}
+.ask{border:2px solid var(--err);border-radius:var(--radius);padding:12px 14px;margin-top:10px;background:#fff8f7}
+.ask.change{border-color:var(--main);background:#f2f8f9}
+.ask p{margin:0 0 10px;font-weight:700}
+.ask .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ask .btn{font-size:17px;padding:12px 6px}
+.telText{white-space:nowrap}
+.done-dl{display:block;font-size:14px;color:var(--sub)}
+@media (max-width:560px){.mbtns{grid-template-columns:1fr}}
 
 footer{border-top:1px solid var(--line);padding:22px 0 30px;font-size:15px;color:var(--sub)}
 footer p{margin:2px 0}
@@ -202,7 +222,16 @@ footer p{margin:2px 0}
       <li><div class="no" aria-hidden="true">2</div><div class="tx"><b>送信すると、その場で予約確定</b><span>画面にあなたの接種日時を表示します</span></div></li>
       <li><div class="no" aria-hidden="true">3</div><div class="tx"><b>確認メールが届きます</b><span>当日の持ち物や料金をお知らせします</span></div></li>
     </ol>
-    <p class="caution">ご予約の変更・キャンセルは、お電話でご連絡ください（<span class="telText">0553-22-2511</span>）。</p>
+    <p class="caution">変更・キャンセルは、接種日の2診療日前の17:00までWEBでできます。期限を過ぎた場合は、お電話でご連絡ください（<span class="telText">0553-22-2511</span>）。</p>
+
+    <div class="manage" aria-labelledby="h-manage">
+      <h2 id="h-manage">ご予約済みの方</h2>
+      <p>受付番号と生年月日で、ご予約の変更・キャンセルができます。</p>
+      <div class="mbtns">
+        <button type="button" class="btn secondary" data-manage="change">予約を変更する</button>
+        <button type="button" class="btn danger" data-manage="cancel">予約をキャンセルする</button>
+      </div>
+    </div>
   </div>
 
   <section class="wrap" aria-labelledby="h-schedule">
@@ -404,12 +433,44 @@ footer p{margin:2px 0}
           </ul>
 
           <div class="tel-box">
-            <b>ご予約の変更・キャンセルは、お電話でご連絡ください。</b><br>
-            <a class="telLink2" href="tel:0553222511">0553-22-2511</a>（月～土 9:00～17:00、日曜・祝日を除く）<br>
-            受付番号をお伝えいただくとスムーズです。
+            <b>変更・キャンセルは、各予約に記載の期限までWEBでできます。</b>このページの「予約を変更する」「予約をキャンセルする」ボタンから、受付番号と生年月日を入力してください。<br>
+            期限を過ぎた場合は、お電話でご連絡ください。<br>
+            <a class="telLink2" href="tel:0553222511">0553-22-2511</a>（月～土 9:00～17:00、日曜・祝日を除く）
           </div>
           <div class="btns"><button type="button" class="btn secondary" id="printBtn">この画面を印刷する</button></div>
         </div>
+      </div>
+
+      <!-- 変更・キャンセル画面 -->
+      <div id="manageView" class="hidden">
+        <h2 style="margin-top:24px" tabindex="-1" id="manageTitle">予約の変更</h2>
+
+        <div id="mLookup">
+          <p>予約時の画面や確認メールに記載の<b>受付番号</b>と、<b>生年月日</b>を入力してください。</p>
+          <div class="block" style="padding-top:18px">
+            <div class="field" id="fl-mNo">
+              <label for="mNo">受付番号</label>
+              <input type="text" id="mNo" autocomplete="off" maxlength="12" placeholder="例：R8-0001" style="text-transform:uppercase">
+              <p class="errmsg">受付番号を入力してください。</p>
+            </div>
+            <div class="field" id="fl-mBirth">
+              <span class="lb" id="lb-mbirth">生年月日</span>
+              <div class="row birth" role="group" aria-labelledby="lb-mbirth">
+                <select id="mbirthEra" aria-label="元号"><option value="">元号</option><option>昭和</option><option>平成</option><option>大正</option></select>
+                <select id="mbirthYear" aria-label="年"><option value="">年</option></select>
+                <select id="mbirthMonth" aria-label="月"><option value="">月</option></select>
+                <select id="mbirthDay" aria-label="日"><option value="">日</option></select>
+              </div>
+              <p class="errmsg">生年月日を選んでください。</p>
+            </div>
+            <div id="mLookupErr" class="alert err hidden" role="alert"></div>
+            <div class="btns" style="margin-bottom:10px"><button type="button" class="btn primary" id="mLookupBtn">予約を確認する</button></div>
+          </div>
+        </div>
+
+        <div id="mDetail" class="hidden" aria-live="polite"></div>
+
+        <div class="btns"><button type="button" class="btn secondary" id="mBack">新しく予約する画面に戻る</button></div>
       </div>
 
     </div>
@@ -444,7 +505,7 @@ const TYPE = { flu:'インフルエンザ', covid:'新型コロナ' };
 const RECEPTION_NOTE = { flu:'当日の受付は14:30からです', covid:'' };
 
 const $ = s => document.querySelector(s);
-const state = { slots:{ flu:[], covid:[] }, payload:null, sending:false };
+const state = { slots:{ flu:[], covid:[] }, payload:null, sending:false, mode:'change', mtoken:null, mview:null, mbusy:false };
 const demo = !APP.GAS_URL;
 
 init();
@@ -454,11 +515,7 @@ function init(){
   document.querySelectorAll('#telLink,.telLink2').forEach(a => { a.textContent = APP.HOSPITAL_TEL; a.href = telHref; });
   document.querySelectorAll('.telText').forEach(el => el.textContent = APP.HOSPITAL_TEL);
   $('#city').insertAdjacentHTML('beforeend', CITIES.map(c => `<option>${c}</option>`).join(''));
-  for (let m=1; m<=12; m++) $('#birthMonth').add(new Option(m + '月', m));
-  $('#birthEra').addEventListener('change', fillYears);
-  $('#birthMonth').addEventListener('change', fillDays);
-  $('#birthYear').addEventListener('change', fillDays);
-  fillDays();
+  setupBirth('birth'); setupBirth('mbirth');
 
   document.querySelectorAll('input[name=vaccines]').forEach(el => el.addEventListener('change', onVaccineChange));
   document.querySelectorAll('input,select,textarea').forEach(el => el.addEventListener('change', () => el.closest('.field, .block')?.classList.remove('invalid')));
@@ -466,23 +523,38 @@ function init(){
   $('#backBtn').addEventListener('click', () => show('form'));
   $('#sendBtn').addEventListener('click', onSend);
   $('#printBtn').addEventListener('click', () => window.print());
+  document.querySelectorAll('[data-manage]').forEach(b => b.addEventListener('click', () => openManage(b.dataset.manage)));
+  $('#mLookupBtn').addEventListener('click', onLookup);
+  $('#mNo').addEventListener('keydown', e => { if (e.key === 'Enter') onLookup(); });
+  $('#mBack').addEventListener('click', () => { history.replaceState(null, '', location.pathname); show('form'); });
+  $('#mDetail').addEventListener('click', onDetailClick);
   if (demo) $('#demoBar').classList.remove('hidden');
   loadSlots();
+  const h = location.hash.replace('#','');
+  if (h === 'change' || h === 'cancel') openManage(h);
 }
 
-function fillYears(){
-  const era = ERA[$('#birthEra').value];
-  const sel = $('#birthYear');
+/* 生年月日のプルダウン（予約用 birth… と 変更・キャンセル用 mbirth… で共用） */
+function setupBirth(p){
+  for (let m=1; m<=12; m++) $('#' + p + 'Month').add(new Option(m + '月', m));
+  $('#' + p + 'Era').addEventListener('change', () => fillYears(p));
+  $('#' + p + 'Month').addEventListener('change', () => fillDays(p));
+  $('#' + p + 'Year').addEventListener('change', () => fillDays(p));
+  fillDays(p);
+}
+function fillYears(p){
+  const era = ERA[$('#' + p + 'Era').value];
+  const sel = $('#' + p + 'Year');
   sel.length = 1;
   if (era) for (let y=1; y<=era.max; y++) sel.add(new Option(`${y===1?'元':y}年（${era.base+y}年）`, y));
-  fillDays();
+  fillDays(p);
 }
-function fillDays(){
-  const era = ERA[$('#birthEra').value];
-  const y = era ? era.base + Number($('#birthYear').value || 1) : 2000;
-  const m = Number($('#birthMonth').value || 1);
+function fillDays(p){
+  const era = ERA[$('#' + p + 'Era').value];
+  const y = era ? era.base + Number($('#' + p + 'Year').value || 1) : 2000;
+  const m = Number($('#' + p + 'Month').value || 1);
   const last = new Date(y, m, 0).getDate();
-  const sel = $('#birthDay'); const keep = sel.value;
+  const sel = $('#' + p + 'Day'); const keep = sel.value;
   sel.length = 1;
   for (let d=1; d<=last; d++) sel.add(new Option(d + '日', d));
   if (keep && keep <= last) sel.value = keep;
@@ -659,8 +731,9 @@ function renderDone(res){
   const p = state.payload;
   $('#doneName').textContent = p.name;
   const cards = [];
-  if (res.flu) cards.push(`<div><span class="vt">インフルエンザ</span><span class="when">${esc(res.flu)}</span><span class="rc">${RECEPTION_NOTE.flu}</span></div>`);
-  if (res.covid) cards.push(`<div><span class="vt">新型コロナ</span><span class="when">${esc(res.covid)}</span></div>`);
+  const dl = t => t ? `<span class="done-dl">WEBでの変更・キャンセル期限：${esc(t)}</span>` : '';
+  if (res.flu) cards.push(`<div><span class="vt">インフルエンザ</span><span class="when">${esc(res.flu)}</span><span class="rc">${RECEPTION_NOTE.flu}</span>${dl(res.fluDeadline)}</div>`);
+  if (res.covid) cards.push(`<div><span class="vt">新型コロナ</span><span class="when">${esc(res.covid)}</span>${dl(res.covidDeadline)}</div>`);
   $('#booked').innerHTML = cards.join('');
   $('#receiptNo').textContent = res.receiptNo;
   $('#mailMsg').textContent = res.mailSent
@@ -672,9 +745,133 @@ function show(view){
   $('#form').classList.toggle('hidden', view !== 'form');
   $('#confirmView').classList.toggle('hidden', view !== 'confirm');
   $('#doneView').classList.toggle('hidden', view !== 'done');
+  $('#manageView').classList.toggle('hidden', view !== 'manage');
   $('#form-top').scrollIntoView();
-  const t = { confirm:'#confirmTitle', done:'#doneTitle' }[view];
+  const t = { confirm:'#confirmTitle', done:'#doneTitle', manage:'#manageTitle' }[view];
   if (t) $(t).focus({ preventScroll:true });
+}
+
+/* ============================================================
+   予約の変更・キャンセル
+   ============================================================ */
+async function post(body){
+  if (demo) throw new Error('デモ表示では、予約の変更・キャンセルは利用できません。');
+  const r = await fetch(APP.GAS_URL, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
+  return r.json();
+}
+
+function openManage(mode){
+  state.mode = mode;
+  history.replaceState(null, '', '#' + mode);
+  $('#manageTitle').textContent = mode === 'cancel' ? '予約のキャンセル' : '予約の変更';
+  if (state.mtoken && state.mview){ renderDetail(); }
+  else { $('#mLookup').classList.remove('hidden'); $('#mDetail').classList.add('hidden'); }
+  show('manage');
+}
+
+async function onLookup(){
+  if (state.mbusy) return;
+  document.querySelectorAll('#mLookup .invalid').forEach(el => el.classList.remove('invalid'));
+  const no = toHalf($('#mNo').value.trim()).toUpperCase().replace(/[‐－―ー−]/g,'-');
+  const b = { era:$('#mbirthEra').value, y:Number($('#mbirthYear').value), m:Number($('#mbirthMonth').value), d:Number($('#mbirthDay').value) };
+  let bad = false;
+  if (!no){ $('#fl-mNo').classList.add('invalid'); bad = true; }
+  if (!b.era || !b.y || !b.m || !b.d){ $('#fl-mBirth').classList.add('invalid'); bad = true; }
+  if (bad) return;
+  const err = $('#mLookupErr'); err.classList.add('hidden');
+  const btn = $('#mLookupBtn'); state.mbusy = true; btn.disabled = true; btn.textContent = '確認しています…';
+  try {
+    const res = await post({ action:'lookup', receiptNo:no, birthEra:b.era, birthYear:b.y, birthMonth:b.m, birthDay:b.d });
+    if (!res.ok) throw new Error(res.message);
+    state.mtoken = res.token; state.mview = res;
+    renderDetail();
+  } catch(e){
+    err.textContent = e.message || '確認できませんでした。通信状況をご確認ください。';
+    err.classList.remove('hidden');
+  } finally { state.mbusy = false; btn.disabled = false; btn.textContent = '予約を確認する'; }
+}
+
+function renderDetail(msg){
+  const v = state.mview, cancel = state.mode === 'cancel';
+  $('#mLookup').classList.add('hidden');
+  const box = $('#mDetail'); box.classList.remove('hidden');
+  const tel = `<a href="tel:${APP.HOSPITAL_TEL.replace(/-/g,'')}">${APP.HOSPITAL_TEL}</a>`;
+  let html = msg || '';
+  html += `<p>受付番号 <b>${esc(v.receiptNo)}</b>　${esc(v.name)} 様のご予約</p>`;
+  if (!v.items.length){
+    html += `<div class="rcard"><p style="margin:0">現在、ご予約はありません。新しく予約する場合は、下の「新しく予約する画面に戻る」からお手続きください。</p></div>`;
+  }
+  v.items.forEach(it => {
+    html += `<div class="rcard" data-type="${it.type}">
+      <div class="vt">${esc(it.typeLabel)}</div>
+      <div class="when">${esc(it.slotText)}</div>`;
+    if (!it.canModify){
+      html += `<div class="closed">WEBでの変更・キャンセル期限（${esc(it.deadline)}）を過ぎています。お電話でご連絡ください。<br>${tel}（月～土 9:00～17:00）</div></div>`;
+      return;
+    }
+    html += `<p class="dl">WEBでの変更・キャンセル期限：${esc(it.deadline)}</p>`;
+    if (cancel){
+      html += `<button type="button" class="btn danger" data-act="askCancel">この予約をキャンセルする</button>
+        <div class="ask hidden"><p>${esc(it.typeLabel)}（${esc(it.slotText)}）の予約をキャンセルします。よろしいですか。</p>
+          <div class="row2"><button type="button" class="btn danger fill" data-act="doCancel">キャンセルする</button><button type="button" class="btn secondary" data-act="stop">やめる</button></div></div>`;
+    } else if (!it.options.length){
+      html += `<div class="closed">現在、ほかに予約できる日時がありません。お電話でご相談ください。<br>${tel}</div>`;
+    } else {
+      const byMonth = {};
+      it.options.forEach(o => { const m = Number(o.date.slice(5,7)) + '月'; (byMonth[m] = byMonth[m] || []).push(o); });
+      html += `<div class="field" style="margin-bottom:10px"><label for="new-${it.type}">変更後の日時</label>
+        <select id="new-${it.type}"><option value="">選んでください</option>${Object.entries(byMonth).map(([m, arr]) =>
+          `<optgroup label="${m}">${arr.map(o => `<option value="${esc(o.id)}">${esc(o.label)}${o.remain <= APP.FEW ? '（残りわずか）' : ''}</option>`).join('')}</optgroup>`).join('')}</select></div>
+        <button type="button" class="btn primary" data-act="askChange">この日時に変更する</button>
+        <div class="ask change hidden"><p></p>
+          <div class="row2"><button type="button" class="btn primary" data-act="doChange">変更する</button><button type="button" class="btn secondary" data-act="stop">やめる</button></div></div>`;
+    }
+    html += `</div>`;
+  });
+  const other = cancel ? 'change' : 'cancel';
+  if (v.items.some(it => it.canModify)) html += `<p style="margin-top:6px"><a href="#${other}" data-act="switch">${cancel ? '日時を変更する場合はこちら' : 'キャンセルする場合はこちら'}</a></p>`;
+  box.innerHTML = html;
+}
+
+async function onDetailClick(e){
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const card = el.closest('.rcard');
+  const act = el.dataset.act;
+  if (act === 'switch'){ e.preventDefault(); openManage(state.mode === 'cancel' ? 'change' : 'cancel'); return; }
+  const ask = card && card.querySelector('.ask');
+  if (act === 'stop'){ ask.classList.add('hidden'); return; }
+  if (act === 'askCancel'){ ask.classList.remove('hidden'); ask.querySelector('button').focus(); return; }
+  if (act === 'askChange'){
+    const sel = card.querySelector('select');
+    if (!sel.value){ sel.focus(); sel.closest('.field').classList.add('invalid'); return; }
+    sel.closest('.field').classList.remove('invalid');
+    const it = state.mview.items.find(x => x.type === card.dataset.type);
+    ask.querySelector('p').textContent = `${it.typeLabel}の予約を「${it.slotText}」から「${sel.options[sel.selectedIndex].text.replace('（残りわずか）','')}」に変更します。よろしいですか。`;
+    ask.classList.remove('hidden'); ask.querySelector('button').focus();
+    return;
+  }
+  if ((act === 'doCancel' || act === 'doChange') && !state.mbusy){
+    state.mbusy = true;
+    const type = card.dataset.type;
+    el.disabled = true; el.textContent = '処理しています…';
+    try {
+      const body = { action: act === 'doCancel' ? 'cancel' : 'change', token: state.mtoken, type };
+      if (act === 'doChange') body.slot = card.querySelector('select').value;
+      const res = await post(body);
+      if (res.code === 'SESSION'){ state.mtoken = null; state.mview = null; openManage(state.mode); $('#mLookupErr').textContent = res.message; $('#mLookupErr').classList.remove('hidden'); return; }
+      if (res.view) state.mview = Object.assign({}, state.mview, res.view);
+      if (!res.ok){ renderDetail(`<div class="alert err" role="alert">${esc(res.message)}</div>`); return; }
+      const mail = res.mailSent ? '確認メールをお送りしました。' : '確認メールを送信できませんでした。この画面を控えてください。';
+      const msg = res.action === 'cancel'
+        ? `<div class="done"><h2>キャンセルしました</h2><p style="margin:0">${esc(res.typeLabel)}（${esc(res.before)}）のご予約をキャンセルしました。${mail}</p></div>`
+        : `<div class="done"><h2>予約を変更しました</h2><p style="margin:0">${esc(res.typeLabel)}の新しい接種日時は</p><p class="receipt" style="margin:4px 0">${esc(res.after)}</p><p style="margin:0">です。${type === 'flu' ? RECEPTION_NOTE.flu + '。' : ''}${mail}</p>${res.deadline ? `<p class="note">WEBでの変更・キャンセル期限：${esc(res.deadline)}</p>` : ''}</div>`;
+      renderDetail(msg);
+      loadSlots();
+      $('#mDetail').scrollIntoView({ block:'start' });
+    } catch(err){
+      renderDetail(`<div class="alert err" role="alert">通信できませんでした。もう一度お試しいただくか、お電話でご連絡ください（${APP.HOSPITAL_TEL}）。</div>`);
+    } finally { state.mbusy = false; }
+  }
 }
 
 /* ---------- ユーティリティ ---------- */
