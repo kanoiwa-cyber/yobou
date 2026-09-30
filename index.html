@@ -707,8 +707,7 @@ async function onSend(){
       res = { ok:true, receiptNo:'R8-0000（デモ）', mailSent:true,
         flu: p.flu ? slotLabel('flu', p.flu) : '', covid: p.covid ? slotLabel('covid', p.covid) : '' };
     } else {
-      const r = await fetch(APP.GAS_URL, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify(state.payload) });
-      res = await r.json();
+      res = await callGas(state.payload);
     }
     if (res.ok){ renderDone(res); show('done'); return; }
     if (res.code === 'SLOT_FULL' || res.code === 'DUPLICATE'){
@@ -756,8 +755,19 @@ function show(view){
    ============================================================ */
 async function post(body){
   if (demo) throw new Error('デモ表示では、予約の変更・キャンセルは利用できません。');
-  const r = await fetch(APP.GAS_URL, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
-  return r.json();
+  return callGas(body);
+}
+
+/* GASへの送信。失敗の原因が分かるように、エラー内容を具体的に返す */
+async function callGas(body){
+  let r;
+  try {
+    r = await fetch(APP.GAS_URL, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
+  } catch(e){ throw new Error('サーバーに接続できませんでした（ネットワークエラー）。'); }
+  if (!r.ok) throw new Error(`サーバーに接続できませんでした（エラーコード ${r.status}）。`);
+  const text = await r.text();
+  try { return JSON.parse(text); }
+  catch(e){ throw new Error('サーバーから予期しない応答がありました（システム側のエラー）。'); }
 }
 
 function openManage(mode){
