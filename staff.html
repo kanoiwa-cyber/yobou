@@ -72,7 +72,7 @@ tr.past td{color:#888}
 .st-受付中{background:var(--s-open-bg);color:var(--s-open)}
 .st-満枠{background:var(--s-full-bg);color:var(--s-full)}
 .st-締切{background:var(--s-past-bg);color:var(--s-past)}
-.st-電話受付{background:var(--s-tel-bg);color:var(--s-tel)}
+.st-WEBなし{background:var(--s-tel-bg);color:var(--s-tel)}
 .num{white-space:nowrap}
 .num b{font-size:18px}
 .num small{display:block;color:var(--sub);font-size:13px}
@@ -133,7 +133,7 @@ dialog::backdrop{background:rgba(20,30,35,.45)}
 <main id="loginView" class="wrap">
   <form class="login" id="loginForm">
     <h2>暗証番号の入力</h2>
-    <p>WEB予約枠の上限と、電話受付への切り替えを行う画面です。</p>
+    <p>WEB予約の上限人数を調整する画面です。</p>
     <label class="lb" for="pin">暗証番号</label>
     <input type="password" id="pin" inputmode="numeric" autocomplete="off" maxlength="12" required>
     <div id="loginMsg" class="msg err hidden" role="alert"></div>
@@ -151,21 +151,21 @@ dialog::backdrop{background:rgba(20,30,35,.45)}
       <label><input type="radio" name="ftype" value="flu">インフルエンザ</label>
       <label><input type="radio" name="ftype" value="covid">新型コロナ</label>
     </div>
-    <label class="chk"><input type="checkbox" id="showPast">WEB受付締切を過ぎた枠も表示</label>
+    <label class="chk"><input type="checkbox" id="showPast">WEB予約締切を過ぎた枠も表示</label>
   </div>
 
   <div class="legend">
-    <p><b>WEB上限</b>：WEBで受け付ける人数です。減らした分は電話受付に回ります。</p>
-    <p><b>電話受付へ</b>にチェックすると、その枠はWEBの選択肢から消え、以降は電話・窓口で受け付けます。</p>
-    <p>WEB申込は「確定」と「仮（未対応・保留の第1希望）」の合計です。変更後、下の職員番号を入れて「枠調整を決定」を押すと反映されます。</p>
+    <p><b>WEB上限</b>：WEBで予約できる人数です。減らした分は電話・窓口の予約に回せます。<b>0</b>にすると、その枠はWEBで予約できなくなります。</p>
+    <p><b>WEB予約</b>：WEBで予約済みの人数です（キャンセルは除く）。電話で日時の変更を受けた場合は、「申込一覧」シートの予約枠を選び直してください。</p>
+    <p>変更後、画面下に職員番号を入れて「枠調整を決定」を押すと反映されます。</p>
   </div>
 
   <div class="table-box">
     <table>
       <thead><tr>
         <th scope="col">接種日時</th><th scope="col">種類</th><th scope="col">状態</th>
-        <th scope="col">WEB申込</th><th scope="col">WEB上限</th><th scope="col">電話受付へ</th>
-        <th scope="col">WEB締切</th><th scope="col">最終調整</th>
+        <th scope="col">WEB予約</th><th scope="col">WEB上限</th>
+        <th scope="col">WEB予約締切</th><th scope="col">最終調整</th>
       </tr></thead>
       <tbody id="rows"></tbody>
     </table>
@@ -267,7 +267,7 @@ $('#reloadBtn').addEventListener('click', () => {
 document.querySelectorAll('input[name=ftype]').forEach(el => el.addEventListener('change', render));
 $('#showPast').addEventListener('change', render);
 
-function cur(s){ return st.edits[s.label] || { cap:s.cap, stop:s.stop }; }
+function cur(s){ return { cap: st.edits[s.label] !== undefined ? st.edits[s.label] : s.cap }; }
 function dtLabel(s){
   const d = new Date(s.date + 'T00:00:00');
   // 時刻は枠名（例：10月20日（火）15:00）の末尾から取り出す
@@ -276,8 +276,8 @@ function dtLabel(s){
 }
 function fmtDT(iso){ if (!iso) return ''; const d = new Date(iso); return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`; }
 function viewState(s, c){
-  if (c.stop) return '電話受付';
   if (s.past) return '締切';
+  if (c.cap === 0) return 'WEBなし';
   return s.used >= c.cap ? '満枠' : '受付中';
 }
 
@@ -286,10 +286,10 @@ function render(){
   const showPast = $('#showPast').checked;
   const list = st.slots.filter(s => (f === 'all' || s.type === f) && (showPast || !s.past));
   const tb = $('#rows');
-  if (!list.length){ tb.innerHTML = '<tr><td colspan="8" class="empty">表示する枠はありません。</td></tr>'; return; }
+  if (!list.length){ tb.innerHTML = '<tr><td colspan="7" class="empty">表示する枠はありません。</td></tr>'; return; }
   let prev = '';
   tb.innerHTML = list.map(s => {
-    const c = cur(s), edited = !!st.edits[s.label], state = viewState(s, c);
+    const c = cur(s), edited = st.edits[s.label] !== undefined, state = viewState(s, c);
     const dayStart = s.date !== prev; prev = s.date;
     const dis = s.past ? 'disabled' : '';
     const id = esc(s.label);
@@ -297,13 +297,12 @@ function render(){
       <td class="dt">${esc(dtLabel(s))}${edited ? '<span class="edited-tag">変更あり</span>' : ''}</td>
       <td class="type">${TYPE[s.type]}</td>
       <td><span class="state st-${state}">${state}</span></td>
-      <td class="num"><b>${s.used}</b> / ${c.cap}名<small>確定${s.fixed}・仮${s.pending}</small></td>
+      <td class="num"><b>${s.used}</b> / ${c.cap}名</td>
       <td><span class="stepper">
           <button type="button" data-act="minus" aria-label="${id}のWEB上限を1減らす" ${dis || (c.cap <= 0 ? 'disabled' : '')}>−</button>
           <input type="text" inputmode="numeric" value="${c.cap}" data-act="cap" aria-label="${id}のWEB上限" ${dis}>
           <button type="button" data-act="plus" aria-label="${id}のWEB上限を1増やす" ${dis || (c.cap >= st.capMax ? 'disabled' : '')}>＋</button>
-        </span>${c.cap < s.used && !c.stop ? '<span class="warn">申込数が上限を超えています</span>' : ''}</td>
-      <td><label class="switch"><input type="checkbox" data-act="stop" ${c.stop ? 'checked' : ''} ${dis}>電話受付へ</label></td>
+        </span>${c.cap > 0 && c.cap < s.used ? '<span class="warn">予約数が上限を超えています</span>' : ''}</td>
       <td class="upd">${fmtDT(s.cutoff)}</td>
       <td class="upd">${s.updated ? fmtDT(s.updated) + '<br>職員 ' + esc(s.updatedBy) : '－'}</td>
     </tr>`;
@@ -313,21 +312,30 @@ function render(){
 $('#rows').addEventListener('click', e => {
   const b = e.target.closest('button[data-act]'); if (!b) return;
   const s = findSlot(b); const c = cur(s);
-  setEdit(s, { cap: Math.min(st.capMax, Math.max(0, c.cap + (b.dataset.act === 'plus' ? 1 : -1))), stop:c.stop }, b.dataset.act);
+  setEdit(s, Math.min(st.capMax, Math.max(0, c.cap + (b.dataset.act === 'plus' ? 1 : -1))), b.dataset.act);
 });
 $('#rows').addEventListener('change', e => {
   const el = e.target; const s = findSlot(el); if (!s) return; const c = cur(s);
-  if (el.dataset.act === 'stop') setEdit(s, { cap:c.cap, stop:el.checked }, 'stop');
   if (el.dataset.act === 'cap'){
     const v = Number(String(el.value).replace(/[０-９]/g, d => String.fromCharCode(d.charCodeAt(0) - 0xFEE0)));
     if (!Number.isInteger(v) || v < 0 || v > st.capMax){ showMsg('err', `WEB上限は0～${st.capMax}の数字で入力してください。`); el.value = c.cap; return; }
-    setEdit(s, { cap:v, stop:c.stop }, 'cap');
+    setEdit(s, v, 'cap');
   }
 });
+/* 数字を直接入力した場合も、その場で変更として扱う（入力欄から直接「枠調整を決定」を押しても反映されるように） */
+$('#rows').addEventListener('input', e => {
+  const el = e.target; if (el.dataset.act !== 'cap') return;
+  const s = findSlot(el); if (!s) return;
+  const v = Number(String(el.value).replace(/[０-９]/g, d => String.fromCharCode(d.charCodeAt(0) - 0xFEE0)));
+  if (el.value === '' || !Number.isInteger(v) || v < 0 || v > st.capMax) return;
+  if (v === s.cap) delete st.edits[s.label]; else st.edits[s.label] = v;
+  el.closest('tr').classList.toggle('edited', st.edits[s.label] !== undefined);
+  updateBar();
+});
 function findSlot(el){ const tr = el.closest('tr'); return tr && st.slots.find(s => s.label === tr.dataset.label); }
-function setEdit(s, next, focusAct){
-  if (next.cap === s.cap && next.stop === s.stop) delete st.edits[s.label];
-  else st.edits[s.label] = next;
+function setEdit(s, cap, focusAct){
+  if (cap === s.cap) delete st.edits[s.label];
+  else st.edits[s.label] = cap;
   render(); updateBar();
   const tr = [...document.querySelectorAll('#rows tr')].find(t => t.dataset.label === s.label);
   const f = tr && tr.querySelector(`[data-act=${focusAct}]`);
@@ -348,15 +356,14 @@ function renderHistory(h){
 
 /* ---------- 決定 ---------- */
 $('#saveBtn').addEventListener('click', () => {
+  if (document.activeElement && document.activeElement.dataset && document.activeElement.dataset.act === 'cap') document.activeElement.blur();
   const staff = $('#staffId').value.trim().replace(/[０-９]/g, d => String.fromCharCode(d.charCodeAt(0) - 0xFEE0));
   $('#staffId').value = staff;
   if (!/^[0-9A-Za-z]{1,10}$/.test(staff)){ showMsg('err', '職員番号を入力してから「枠調整を決定」を押してください。'); $('#staffId').focus(); return; }
   $('#dlgStaff').textContent = staff;
-  $('#dlgList').innerHTML = st.slots.filter(s => st.edits[s.label]).map(s => {
-    const a = st.edits[s.label], parts = [];
-    if (a.cap !== s.cap) parts.push(`WEB上限 ${s.cap}名 → <b>${a.cap}名</b>`);
-    if (a.stop !== s.stop) parts.push(a.stop ? '<b>電話受付へ切り替え</b>' : '<b>WEB受付に戻す</b>');
-    return `<li>${esc(dtLabel(s))}（${TYPE[s.type]}）：${parts.join('、')}</li>`;
+  $('#dlgList').innerHTML = st.slots.filter(s => st.edits[s.label] !== undefined).map(s => {
+    const cap = st.edits[s.label];
+    return `<li>${esc(dtLabel(s))}（${TYPE[s.type]}）：WEB上限 ${s.cap}名 → <b>${cap}名</b>${cap === 0 ? '（WEB予約なし）' : ''}</li>`;
   }).join('');
   $('#confirmDlg').showModal();
 });
@@ -364,11 +371,11 @@ $('#dlgCancel').addEventListener('click', () => $('#confirmDlg').close());
 $('#dlgOk').addEventListener('click', async () => {
   if (st.busy) return; st.busy = true;
   const ok = $('#dlgOk'); ok.disabled = true; ok.textContent = '反映しています…';
-  const changes = st.slots.filter(s => st.edits[s.label]).map(s => ({ label:s.label, before:{ cap:s.cap, stop:s.stop }, after:st.edits[s.label] }));
+  const changes = st.slots.filter(s => st.edits[s.label] !== undefined).map(s => ({ label:s.label, before:s.cap, after:st.edits[s.label] }));
   try {
     const res = await api('adminSave', { staffId: $('#staffId').value.trim(), changes });
     $('#confirmDlg').close();
-    if (res.ok){ await load(true); showMsg('ok', `枠調整を反映しました（${changes.length}枠）。WEBの受付ページにもすぐ反映されます。`); }
+    if (res.ok){ await load(true); showMsg('ok', `枠調整を反映しました（${changes.length}枠）。WEBの予約ページにもすぐ反映されます。`); }
     else if (res.code === 'CONFLICT'){ await load(true); showMsg('err', res.message); }
     else showMsg('err', res.message || '反映できませんでした。');
   } catch(err){
